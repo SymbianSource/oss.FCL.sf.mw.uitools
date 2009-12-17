@@ -1,0 +1,32 @@
+/*
+* Copyright (c) 2005 Nokia Corporation and/or its subsidiary(-ies).
+* All rights reserved.
+* This component and the accompanying materials are made available
+* under the terms of "Eclipse Public License v1.0"
+* which accompanies this distribution, and is available
+* at the URL "http://www.eclipse.org/legal/epl-v10.html".
+*
+* Initial Contributors:
+* Nokia Corporation - initial contribution.
+*
+* Contributors:
+*
+* Description:
+*
+*/
+
+
+PRJ_PLATFORMS
+
+TOOLS
+
+PRJ_EXPORTS
+../lib/SVGTBinEncode.exe	/epoc32/tools/SVGTBinEncode.exe
+../lib/xerces-c_2_6.dll		/epoc32/tools/xerces-c_2_6.dll
+PRJ_MMPFILES
+
+// Copy the SVGT Encoder Binary to target dir
+//gnumakefile copysvgtbinencode.mk
+
+// Enable Below Extension Makefile to compile and copy encoder to target dir
+//gnumakefile makefile
