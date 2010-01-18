@@ -20,8 +20,11 @@
 #include <CdlCompilerToolkit/CdlTkInterface.h>
 #include <CdlCompilerToolkit/CdlTkInstance.h>
 #include <fstream>
+#include <memory>
 
 namespace CdlCompilerToolkit {
+class CCdlTkApi;
+class CCdlTkInterface;
 
 /**
 * CCdlTkProcess
@@ -385,6 +388,8 @@ public:
     * Called when an API is found that is only in the left hand interface
     */
 	virtual void ApiNotInRight(const CCdlTkApi& aApi) = 0;
+
+	virtual ~MCdlTkApiCheckObserver(){}
 	};
 
 /**

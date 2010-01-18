@@ -22,10 +22,11 @@
 #include <string>
 #include <vector>
 #include <iosfwd>
+#include <memory>
 #include "Layout.h"
 using namespace std;
 
-#include <cdlcompilertoolkit/cdltkinterface.h>
+#include <CdlCompilerToolkit/CdlTkInterface.h>
 using namespace CdlCompilerToolkit;
 
 
@@ -33,6 +34,7 @@ using namespace CdlCompilerToolkit;
 *  LayoutToCdl
 *  Generate a CDL interface for a layout
 */
+
 class LayoutToCdl
 	{
 public:

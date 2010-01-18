@@ -25,7 +25,7 @@
 #include "MLCompData.h"
 using namespace std;
 
-#include <cdlcompilertoolkit/cdltkinterface.h>
+#include <CdlCompilerToolkit/CdlTkInterface.h>
 using namespace CdlCompilerToolkit;
 
 
@@ -59,7 +59,7 @@ public:
 	static string LineApiName(TMLCompDataLine& aLine);
 	static string LineParamLimitsApiName(TMLCompDataLine& aLine);
 private:
-	static string MLCompDataToCdl::ReturnType(TMLCompDataLine& aLine);
+	static string ReturnType(TMLCompDataLine& aLine);
 	static void ReplaceRemovedAPIs(CCdlTkInterface& aInterface, const TMLCompData& aLayout, bool aDeletesAllowed);
 	static void CleanUpAPIComments(CCdlTkInterface& aInterface);
 	static CCdlTkFunctionApi* ProcessFunctionApi(CCdlTkInterface& aInterface, string aReturnType, string aName, bool& aIsNew);

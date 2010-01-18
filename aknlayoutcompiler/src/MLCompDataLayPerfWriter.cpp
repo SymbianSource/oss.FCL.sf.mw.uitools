@@ -22,8 +22,8 @@
 #include "LayoutCompilerErr.h"
 #include "CodeGenConsts.h"
 
-#include <cdlcompilertoolkit/cdltkinterface.h>
-#include <cdlcompilertoolkit/cdltkutil.h>
+#include <CdlCompilerToolkit/CdlTkInterface.h>
+#include <CdlCompilerToolkit/CdlTkUtil.h>
 
 #include <iostream>
 #include <sstream>
@@ -88,7 +88,7 @@ void TMLCompDataLayPerfTableWriter::WriteTable(ostream& out)
 	out << "\n// Layout MACROs for Layout Table : ";
 	out << iTable.Name() << endl;
 
-	for (int i=0; i<iTable.size(); ++i)
+	for (unsigned int i=0; i<iTable.size(); ++i)
 		{
 		WriteLine(out, *iTable[i]);
 		}
@@ -187,8 +187,8 @@ string TMLCompDataLayPerfTableWriter::BuildParamLimitParams(TMLCompDataLine& aLi
 
 TMLCompDataLayPerfWriter::TMLCompDataLayPerfWriter(CCdlTkInterface& aInterface, TMLCompData& aLayout, const std::string& aName)
 	:
-	iInterface(aInterface), 
-	TMLWriterBase<TMLCompData>(aLayout, aName)
+	TMLWriterBase<TMLCompData>(aLayout, aName),
+	iInterface(aInterface)
 	{
 	}
 
@@ -201,7 +201,7 @@ void TMLCompDataLayPerfWriter::Write(const std::string& aCdlName)
 	string ifName(iInterface.Header().Name());
 
 	out << "// function implementations: " << endl;
-	int tableId = 0;
+	unsigned int tableId = 0;
 	for (TMLCompData::iterator pTab = iLayout.begin(); pTab != iLayout.end(); ++pTab)
 		{
 		TMLCompDataLayPerfTableWriter writer(this, **pTab, ifName, tableId++);

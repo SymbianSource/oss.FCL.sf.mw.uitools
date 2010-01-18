@@ -90,7 +90,7 @@ void AdaptationLayerTemplate::ShowHelp(ostream& stream)
 
 
 AdaptationLayerTemplate::AdaptationLayerTemplate(TLayout& aLayout, CCdlTkInterface& aLayIface, CCdlTkInterface& aScaleIface, CCdlTkInstance& aInstance, string& aExisting)
-: iLayout(aLayout), iLayIface(aLayIface), iScaleIface(aScaleIface), iInstance(aInstance), iExisting(aExisting)
+: iLayIface(aLayIface), iScaleIface(aScaleIface), iLayout(aLayout), iInstance(aInstance), iExisting(aExisting)
 	{
 	}
 
@@ -162,7 +162,7 @@ int CountMatch(const string& aLeft, const string& aRight)
 
 pair<string,int> AdaptationLayerTemplate::GetApiMatch(const string& aName)
 	{
-	int size = aName.size();
+	//int size = aName.size();
 	CCdlTkApiList& apiList = iScaleIface.ApiList();
 	string bestMatch;
 	int bestScore = 0;

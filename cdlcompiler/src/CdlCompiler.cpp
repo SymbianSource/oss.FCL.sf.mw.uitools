@@ -22,9 +22,15 @@
 #include <list>
 #include <sstream>
 #include <iomanip>
+#include <memory>
+
+#ifdef __MSVCRT__
 #include <direct.h>
-#include <cdlcompilertoolkit/cdltkutil.h>
-#include <cdlcompilertoolkit/cdltkprocess.h>
+#endif
+
+#include <CdlCompilerToolkit/CdlTkUtil.h>
+#include <CdlCompilerToolkit/CdlTkProcess.h>
+#include <CdlCompilerToolkit/CdlCompat.h>
 using namespace std;
 using namespace CdlCompilerToolkit;
 
@@ -214,7 +220,7 @@ int CPackageMode::Process(const TArgsList& aArgs)
 	if (pArg == aArgs.end())
 		throw MainArgsErr("Missing package instance id");
 
-	if (count_if(pArg->begin(), pArg->end(), CdlTkUtil::IsNumeric) == pArg->size())
+	if (count_if(pArg->begin(), pArg->end(), CdlTkUtil::IsNumeric) == static_cast<signed int>( pArg->size()) )
 		{
 		pckg.SetId(CdlTkUtil::ParseInt(*pArg));
 		++pArg;
@@ -367,12 +373,13 @@ class CCompareModeChecker : public MCdlTkApiCheckObserver
 	{
 public:
 	CCompareModeChecker(const string& aLeft, const string& aRight);
+	virtual ~CCompareModeChecker();
 	virtual void StartCheck();
 	virtual void CheckComplete();
 	virtual void ApiInBoth(const CCdlTkApi& aApi);
 	virtual void ApiNotInLeft(const CCdlTkApi& aApi);
 	virtual void ApiNotInRight(const CCdlTkApi& aApi);
-
+	
 private:
 	int iErrs;
 	string iLeft;
@@ -383,6 +390,11 @@ CCompareModeChecker::CCompareModeChecker(const string& aLeft, const string& aRig
 : iLeft(aLeft), iRight(aRight)
 	{
 	}
+
+CCompareModeChecker:: ~CCompareModeChecker()
+    {
+
+    }
 
 void CCompareModeChecker::StartCheck()
 	{
@@ -569,7 +581,7 @@ int DoMain(int argc, char* argv[])
 	if (*pArg == "client")
 		{
 		mode = auto_ptr<CCompilerMode>(new CClientMode);
-		CdlTkUtil::SetOutputPath(CdlTkUtil::CurrentDrive() + "\\epoc32\\include\\");
+		CdlTkUtil::SetOutputPath(CdlTkUtil::CurrentDrive() +PATHSEP+"epoc32"+PATHSEP+"include"+PATHSEP);
 		}
 	else if (*pArg == "instance")
 		{

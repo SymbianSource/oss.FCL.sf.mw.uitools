@@ -60,8 +60,11 @@ int LayoutPackage::Process(vector<string>& args)
 	string& id = args[5];
 
 	for(CZoomLevelNames::iterator pZoomName = zoomLevelNames.begin(); pZoomName != zoomLevelNames.end(); ++pZoomName)
+		{
+		//string zoomName = CdlTkUtil::Replace("\r", "", pZoomName->second);
+		//zoomName = CdlTkUtil::Replace("\n", "", zoomName);
 		Process(name, w, h, id, styleName, deliveryTypeName, priority, appUid, args.begin() + 6, args.end(), pZoomName->second);
-
+		}
 	return 0;
 	}
 
@@ -75,7 +78,7 @@ void LayoutPackage::ShowHelp(ostream& stream)
 	stream << "    The contents of the package." << endl;
 	stream << "  If -z<zoomList> is specified, then instances for zoom factors" << endl;
 	stream << "    (in the form \"n,string\") appearing in the file <zoomList> will be generated, " << endl;
-	stream << "    by replacing the keyword $ZOOM in the package definitions." << endl;
+	stream << "    by replacing the keyword ZOOM in the package definitions." << endl;
 	stream << "  If -s<screenStyleName> is specified, then instances for the appropriate" << endl;
 	stream << "    screen style as found in WSINI.INI will be generated." << endl;
 	stream << "  If -d<deliveryType> is specified then the delivery type will be appended to" << endl;
@@ -100,12 +103,12 @@ void LayoutPackage::Process(
 	vector<string>::const_iterator aEnd, 
 	const string& aZoomName)
 	{
-	CCdlTkCdlFileParser parser(KDirDomainSysHeader+KLayoutPackCdlFile);
+	CCdlTkCdlFileParser parser(CdlTkUtil::CurrentDrive()+KDirDomainSysHeader+KLayoutPackCdlFile);
 	auto_ptr<CCdlTkInterface> iface(parser.LoadAndParse(true));
 	CCdlTkPackage pkg(*iface);
 	pkg.TemplateAllImplementations();
 
-	string zoomName = CdlTkUtil::Replace("$ZOOM", aZoomName, aName);
+	string zoomName = CdlTkUtil::Replace("ZOOM", aZoomName, aName);
 	string zoomIdName = "EAknUiZoom" + aZoomName;
 	string styleHash = Hash(aStyleName);
     string priority = CdlTkUtil::IntToString(CdlTkUtil::ParseInt(aPriority));
@@ -145,12 +148,12 @@ void LayoutPackage::Process(
 				throw LayoutPackageArgsErr();
 			const string& inst = *aBegin;
 
-			string zoomContent = CdlTkUtil::Replace("$ZOOM", aZoomName, inst);
+			string zoomContent = CdlTkUtil::Replace("ZOOM", aZoomName, inst);
 			pkg.AddExternalContent(zoomContent, dir, dll);
 			}
 		else
 			{
-			string zoomContent = CdlTkUtil::Replace("$ZOOM", aZoomName, arg);
+			string zoomContent = CdlTkUtil::Replace("ZOOM", aZoomName, arg);
 			pkg.AddLocalContent(zoomContent);
 			cout << zoomContent << endl;
 			}

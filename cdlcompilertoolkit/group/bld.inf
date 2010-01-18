@@ -17,12 +17,12 @@
 #include <platform_paths.hrh>
 
 PRJ_PLATFORMS
-TOOLS CWTOOLS
+TOOLS CWTOOLS TOOLS2
 
 PRJ_EXPORTS
 
 PRJ_MMPFILES
-#if defined(TOOLS) || defined(CWTOOLS)
+#if defined(TOOLS) || defined(CWTOOLS) || defined(TOOLS2)
 CdlCompilerToolkit.mmp
 #endif
 

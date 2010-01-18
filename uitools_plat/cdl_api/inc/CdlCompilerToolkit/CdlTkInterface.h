@@ -455,7 +455,7 @@ private:
 	// member data used in Match() calculation
 	std::string iTextBeforeTypeVar;
 	std::string iTextAfterTypeVar;
-	int iTypeVarPos;
+	std::string::size_type iTypeVarPos;
 	int iSizeAfterTypeVar;
 	int iTypeSize;
 	int iTypeSizeWithoutTypeVar;

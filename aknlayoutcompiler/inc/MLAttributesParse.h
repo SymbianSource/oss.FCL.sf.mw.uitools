@@ -48,7 +48,7 @@ using namespace std;
 class MSaxLayoutAttributesHandler
 	{
 public:
-	typedef SAX::basic_Attributes<std::string> TAttribs; // this is XML Attribs, not to be confused with layout attibutes!
+	typedef Arabica::SAX::Attributes<std::string> TAttribs; // this is XML Attribs, not to be confused with layout attibutes!
 	virtual MSaxLayoutAttributesHandler* HandleSax(const std::string& aElement, const TAttribs& aAttribs) { return this; };
 	virtual void HandleSaxEnd(const std::string& aElement) { };
 	};
@@ -95,18 +95,18 @@ private: // owned
 /**
  * this is the main SAX parser implementation
  */
-class TLayoutAttributesSaxParser : private SAX::basic_DefaultHandler<std::string>
+class TLayoutAttributesSaxParser : private Arabica::SAX::DefaultHandler<std::string>
 	{
 private:
 	typedef stack<MSaxLayoutAttributesHandler*> TSaxAttributesHandlerStack;
-	typedef SAX::basic_ErrorHandler<std::string>::SAXParseExceptionT TException;
+	typedef Arabica::SAX::ErrorHandler<std::string>::SAXParseExceptionT TException;
 
 public:
 	TLayoutAttributesSaxParser(MSaxLayoutAttributesHandler* aHandler);
 	void Parse(const std::string& aFileName);
 
 private: // from basic_DefaultHandler
-	void startElement(const std::string& namespaceURI, const std::string& localName, const std::string& qName, const SAX::basic_Attributes<std::string>& atts);
+	void startElement(const std::string& namespaceURI, const std::string& localName, const std::string& qName, const Arabica::SAX::Attributes<std::string>& atts);
 	void endElement(const std::string& namespaceURI, const std::string& localName, const std::string& qName);
 
 	void warning(const TException& aException);

@@ -27,7 +27,7 @@
 
 class TMLCompDataLayPerfWriter;
 
-#include <cdlcompilertoolkit/cdltkinterface.h>
+#include <CdlCompilerToolkit/CdlTkInterface.h>
 using namespace CdlCompilerToolkit;
 
 

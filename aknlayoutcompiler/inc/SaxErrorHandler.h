@@ -25,17 +25,18 @@
 #ifndef __SAXERRORHANDLER_H_
 #define __SAXERRORHANDLER_H_
 
-#include <DOM/SAX2DOM/SAX2DOM.h>
+#include <DOM/SAX2DOM/SAX2DOM.hpp>
+#include <SAX/ErrorHandler.hpp>
 
-class SAXErrorHandler : public SAX::ErrorHandler
+class SAXErrorHandler : public Arabica::SAX::ErrorHandler<std::string>
 	{
 public:
   SAXErrorHandler() { }
   virtual ~SAXErrorHandler() { }
 public: // from SAX::ErrorHandler
-  virtual void warning(const SAX::SAXParseException&);
-  virtual void error(const SAX::SAXParseException&);
-  virtual void fatalError(const SAX::SAXParseException& exception);
+  virtual void warning(const Arabica::SAX::SAXParseException<std::string>&);
+  virtual void error(const Arabica::SAX::SAXParseException<std::string>&);
+  virtual void fatalError(const Arabica::SAX::SAXParseException<std::string>&);
 	};
 
 #endif // __SAXERRORHANDLER_H_

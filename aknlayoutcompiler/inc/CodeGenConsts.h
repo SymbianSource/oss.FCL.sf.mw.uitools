@@ -25,8 +25,8 @@ using namespace std;
 // includes
 const string KIncludeLayoutInstanceHeaderScalableDef("#include <aknlayout2scalabledef.h>");
 // directories
-const string KDirEpocSysHeader("\\epoc32\\include\\");
-const string KDirDomainSysHeader("\\epoc32\\include\\platform\\mw\\");
+const string KDirEpocSysHeader("/epoc32/include/");
+const string KDirDomainSysHeader("/epoc32/include/platform/mw/");
 
 // parameter namesy
 const string KParamNameBase("aIndex_");

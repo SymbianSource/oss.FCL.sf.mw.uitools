@@ -225,7 +225,10 @@ const string KDllInstanceName = "KDllInst_$INST";
 
 std::string CCdlTkInstance::InstanceNameToDllInstanceName(const std::string& aName)
 	{
-	return CdlTkUtil::Replace("$INST", CdlTkUtil::ToCpp(aName), KDllInstanceName);
+	string tempName = aName;
+	tempName = CdlTkUtil::Replace("\r", "", tempName);
+	tempName = CdlTkUtil::Replace("\n", "", tempName);
+	return CdlTkUtil::Replace("$INST", CdlTkUtil::ToCpp(tempName), KDllInstanceName);
 	}
 
 

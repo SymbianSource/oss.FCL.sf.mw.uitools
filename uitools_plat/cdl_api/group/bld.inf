@@ -29,3 +29,5 @@ PRJ_EXPORTS
 ../inc/CdlCompilerToolkit/CdlTkInterface.h     MW_LAYER_PLATFORM_EXPORT_PATH(CdlCompilerToolkit/CdlTkInterface.h)
 ../inc/CdlCompilerToolkit/CdlTkUtil.h     MW_LAYER_PLATFORM_EXPORT_PATH(CdlCompilerToolkit/CdlTkUtil.h)
 ../inc/CdlCompilerToolkit/CdlTkProcess.h     MW_LAYER_PLATFORM_EXPORT_PATH(CdlCompilerToolkit/CdlTkProcess.h)
+../inc/CdlCompilerToolkit/CdlCompat.h     MW_LAYER_PLATFORM_EXPORT_PATH(CdlCompilerToolkit/CdlCompat.h)
+

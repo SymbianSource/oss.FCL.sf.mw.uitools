@@ -35,8 +35,8 @@ using namespace CdlCompilerToolkit;
 #define AKNLAYOUT_DEFINE_BYTECODE(name,byte) const char name = char(byte);
 #include "AknLayoutByteCodes.h"
 
-
-extern string KMultiLine("Multiline_");
+extern string KMultiLine;
+string KMultiLine("Multiline_");
 typedef LayoutProcessArgsErr<LayoutCdlInstanceOpt> LayoutCdlInstanceOptArgsErr;
 
 
@@ -368,7 +368,7 @@ void CLayoutInstOpt::SetNewLineData(CLayoutInstOptImpl& aImpl)
 					{
 					if (maxVal == 0)
 						maxVal = values.size();
-					else if (maxVal != values.size())
+					else if (static_cast<unsigned int>(maxVal) != values.size())
 						throw CdlTkAssert(string("param range mismatch ") + line.Name() + " " + param.Name());
 					cells |= nextCell;
 					}
@@ -464,11 +464,12 @@ SImplFunc& CLayoutInstOpt::AddImplFunc(SImplFunc::TFuncType aType, int aParams, 
 // the data lookup table. These need to be turned into an array by adding declarations
 // and brackets to the first and last implementations. Extra support functions are also
 // added.
-extern string KExtraCpp = "\
+extern string KExtraCpp;
+string KExtraCpp = "\
 #include \"aknlayout2decode.h\"\n\
 namespace $INTERFACE_NS { extern const TUint8 KByteCodedData[]; }\n";
-
-extern string KInitialCpp ="\
+extern string KInitialCpp;
+string KInitialCpp ="\
 extern const TUint16 KDataLookup[$INTERFACE_NS::E_TApiId_TableSize];\n\
 const SImplData KImplData = { KDataLookup, $INTERFACE_NS::KByteCodedData };\n\
 \n\
@@ -548,7 +549,8 @@ struct SIdToInt
 
 #include <avkon.hrh>
 const int KScalableFontIdOffset(0x1000);
-extern SIdToInt gIdToIntTable[] =
+extern SIdToInt gIdToIntTable[];
+SIdToInt gIdToIntTable[] =
 	{
 		{ ELayoutAlignLeft, "ELayoutAlignLeft" },
 		{ ELayoutAlignRight, "ELayoutAlignRight" },
@@ -611,7 +613,7 @@ extern void TranslateValue(string& aValue)
 
 void CLayoutInstOpt::EncodeValue(vector<char>& aBytes, string aValue)
 	{
-	int pos;
+	string::size_type pos;
 	TranslateValue(aValue);
 
 	if (aValue == "")
@@ -721,7 +723,7 @@ int LayoutCdlInstanceOpt::Process(vector<string>& args)
 	LayoutCdlInstanceOpt process(*iface);
 
 	TLayout* base = NULL;
-	for (int arg = 3; arg < args.size(); arg += 2)
+	for (unsigned int arg = 3; arg < args.size(); arg += 2)
 		{
 		string layoutName = args[arg];
 		string instName = args[arg+1];

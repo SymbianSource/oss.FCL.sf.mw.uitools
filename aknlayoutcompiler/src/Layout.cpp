@@ -109,8 +109,8 @@ string TValues::CppValue(const string& aValue)
 //  TLayoutLine
 
 TLayoutLine::TLayoutLine( TLayoutTable* aTable, int aId )
-:	iTable(aTable), 
-	iId(aId), 
+:	iId(aId), 
+	iTable(aTable), 
 	iIsUnique(true), 
 	iIsMirroredHorizontally(false),
 	iIsMergedIdentical(false)
@@ -309,15 +309,15 @@ bool TLayoutLine::MatchParams(const TLayoutLine& aLine) const
 
 
 TLayoutTable::TLayoutTable(TLayout* aTables)
-: iTables(aTables), iType(EUnknownTable), iParent(0), iFirstLineGlobalIndex(-1), iAppend(false), iNoSubTables(false)
+: iType(EUnknownTable), iTables(aTables), iParent(0), iFirstLineGlobalIndex(-1), iAppend(false), iNoSubTables(false)
 	{
 	}
 
 TLayoutTable::TLayoutTable(TLayout* aTables, const TLayoutTable& aOther)
-: iTables(aTables), iType(aOther.iType), iParent(0), 
-  iFirstLineGlobalIndex(aOther.iFirstLineGlobalIndex), 
-  iAppend(aOther.iAppend), iColumnNames(aOther.iColumnNames), iName(aOther.iName),
-  iParentName(aOther.iParentName), iNoSubTables(aOther.iNoSubTables)
+: iColumnNames(aOther.iColumnNames), iType(aOther.iType),
+  iTables(aTables), iName(aOther.iName), iParent(0),
+  iParentName(aOther.iParentName), iFirstLineGlobalIndex(aOther.iFirstLineGlobalIndex),
+  iAppend(aOther.iAppend), iNoSubTables(aOther.iNoSubTables)
 	{
 	for (const_iterator it = aOther.begin(); it != aOther.end(); ++it)
 		push_back(new TLayoutLine(this, **it));
@@ -386,7 +386,7 @@ void TLayoutTable::Merge(TLayout::TMergeMode aMergeMode, TLayoutTable& aTable)
 				}
 			case TLayout::KMergeModeUnion:
 				{
-				int index = 0;
+				unsigned int index = 0;
 				for (; pNew != aTable.end(); ++pNew)
 					{
 					bool found = false;
@@ -411,7 +411,7 @@ void TLayoutTable::Merge(TLayout::TMergeMode aMergeMode, TLayoutTable& aTable)
 							}
 						push_back(*pNew);
 						(*pNew)->iTable = this;
-						if ((*pNew)->iId != size())
+						if ( static_cast<unsigned int>( (*pNew)->iId ) != size())
 							iNoSubTables = true;
 						(*pNew)->iId = size();
 						}

@@ -71,7 +71,7 @@ void LayoutExtract::ParseArgs(const vector<string>& args)
 
 	iDocName = args[2];
 
-	int layoutIndex = 3;
+	unsigned int layoutIndex = 3;
 	if (args[3][0] == '-')
 		{
 		if (args[3].size() < 3 || args[3][1] != 'o')

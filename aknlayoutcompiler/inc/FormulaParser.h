@@ -20,7 +20,7 @@
 
 #include <string>
 #include <vector>
-#include "coreParser.h"
+#include "CoreParser.h"
 using namespace std;
 
 enum TFormulaParserIds

@@ -66,7 +66,7 @@ void TLayoutTableWriter::WriteWindowTable(ostream& out)
 	if (iTable.iAppend)
 		out << "\t+" << endl;
 	
-	for (int i=0; i<iTable.size(); ++i)
+	for (unsigned int i=0; i<iTable.size(); ++i)
 		{
 		if (i>0)
 			out << "," << endl;
@@ -126,7 +126,7 @@ void TLayoutTableWriter::WriteTextTable(ostream& out)
 	if (iTable.iAppend)
 		out << "\t+" << endl;
 	
-	for (int i=0; i<iTable.size(); ++i)
+	for (unsigned int i=0; i<iTable.size(); ++i)
 		{
 		if (i>0)
 			out << "," << endl;

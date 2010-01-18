@@ -24,7 +24,7 @@
 #include "Lay2Cdl.h"
 #include "LayoutParse.h"
 #include "LayoutCompilerErr.h"
-#include <cdlcompilertoolkit/cdltkprocess.h>
+#include <CdlCompilerToolkit/CdlTkProcess.h>
 #include <fstream>
 #include <iostream>
 #include <algorithm>

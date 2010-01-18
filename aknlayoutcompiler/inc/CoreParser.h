@@ -19,7 +19,6 @@
 
 #include <string>
 #include <vector>
-#include <deque>
 
 class Parser;
 
@@ -35,7 +34,7 @@ public:
 	int iRuleId;
 	int iStart;
 	int iEnd;
-	std::deque<ParseResult> iChildren;
+	std::vector<ParseResult> iChildren;
 	};
 
 

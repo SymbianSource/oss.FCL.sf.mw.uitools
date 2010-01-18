@@ -22,7 +22,7 @@
 #include "Layout.h" // for constants
 #include "CodeGenConsts.h"
 
-#include <cdlcompilertoolkit/cdltkutil.h>
+#include <CdlCompilerToolkit/CdlTkUtil.h>
 
 #include <iostream>
 #include <sstream>
@@ -96,7 +96,7 @@ void TLayPerfTableWriter::WriteWindowTable(ostream& out)
 	out << "\n// Layout MACROs for LAF Table : ";
 	out << iTable.Name() << endl;
 
-	for (int i=0; i<iTable.size(); ++i)
+	for (unsigned int i=0; i<iTable.size(); ++i)
 		{
 		WriteWindowLine(out, *iTable[i]);
 		}
@@ -205,7 +205,7 @@ void TLayPerfTableWriter::WriteTextTable(ostream& out)
 	out << "// Layout MACROs for LAF Table : ";
 	out << iTable.Name() << endl;
 
-	for (int i=0; i<iTable.size(); ++i)
+	for (unsigned int i=0; i<iTable.size(); ++i)
 		{
 		WriteTextLine(out, *iTable[i]);
 		}
@@ -255,7 +255,7 @@ void TLayPerfWriter::Write(const std::string& aCdlName)
 	string ifName(LayoutToCdl::InterfaceName(cdlFileName));
 
 	out << "// function implementations: " << endl;
-	int tableId = 0;
+	unsigned int tableId = 0;
 	for (TLayout::iterator pTab = iLayout.begin(); pTab != iLayout.end(); ++pTab)
 		{
 		TLayPerfTableWriter writer(**pTab, ifName, tableId++);

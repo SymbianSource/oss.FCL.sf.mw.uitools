@@ -49,7 +49,7 @@ int CdlToLag::Process(const vector<string>& args)
 	CdlToLag process(lag, lagName);
 	process.Start();
 
-	for (int ii = 3; ii < args.size(); ii++)
+	for (unsigned int ii = 3; ii < args.size(); ii++)
 		{
 		string cdlName = args[ii];
 		CCdlTkCdlFileParser parser(cdlName);
@@ -60,7 +60,7 @@ int CdlToLag::Process(const vector<string>& args)
 	process.Finish();
 
 	lag.close();
-	CdlTkUtil::ExportFile(temp, KDirEpocSysHeader+CdlTkUtil::StripPath(lagName));
+	CdlTkUtil::ExportFile(temp, CdlTkUtil::CurrentDrive()+KDirEpocSysHeader+CdlTkUtil::StripPath(lagName));
 
 	return 0;
 	}

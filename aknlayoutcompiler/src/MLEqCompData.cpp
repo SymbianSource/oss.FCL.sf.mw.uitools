@@ -27,7 +27,7 @@
 #include "CodeGenConsts.h"
 #include "UsefulDefinitions.h"
 
-#include "Akndef.hrh"
+#include <AknDef.hrh>
 
 #include <set>
 #include <sstream>
@@ -106,7 +106,7 @@ TMLEqCompDataFormula::TMLEqCompDataFormula(const TMLEqCompDataFormula& aOther)
 	iZoomId(aOther.iZoomId),
 	iFormulaTree(aOther.iFormulaTree)
 	{
-	int x = 0;
+
 	}
 
 const TMLEqCompDataFormula& TMLEqCompDataFormula::operator=(const TMLEqCompDataFormula& aOther)
@@ -322,17 +322,18 @@ void TMLEqCompDataParentInfo::Merge(const TMLEqCompDataParentInfo& aOther)
 
 TMLEqCompDataLine::TMLEqCompDataLine()
 :	iId(0),
-	iIsUnique(true), 
-	iIsMirroredHorizontally(false),
-	iType(EUnknownComponent),
 	iName(KEqCompDataUnknown),
+	iType(EUnknownComponent),
 	iDrawingOrder(-1),
 	iParentTable(0),
 	iParentInfo(0),
+	iIsUnique(true),
+	iGlobalIndex(0),
+	iIsMirroredHorizontally(false),
 //	iAttributeInfo(0),
 	iNumCols(1),
-	iNumRows(1),
-	iGlobalIndex(0)
+	iNumRows(1)
+
 	{	
 		
 	}
@@ -738,18 +739,18 @@ TMLEqCompDataLine* TMLEqCompDataTableOptionSet::FindLine(int aId) const
 
 TMLEqCompDataTable::TMLEqCompDataTable(TMLEqCompData* aTables)
 	: 
+	iId(0),
 	iTables(aTables), 
-	iParentLine(NULL), 
-	iId(0)
+	iParentLine(NULL)
 	{
 	}
 
 TMLEqCompDataTable::TMLEqCompDataTable(TMLEqCompData* aTables, const TMLEqCompDataTable& aOther)
 	: 
+  	iId(aOther.iId),
 	iTables(aTables), 
 	iParentLine(NULL), 
-	iParentName(aOther.iParentName),
-  	iId(aOther.iId)
+	iParentName(aOther.iParentName)
 	{
 	for (const_iterator pOptionSet = aOther.begin(); pOptionSet != aOther.end(); ++pOptionSet)
 		{
@@ -1021,7 +1022,6 @@ void TMLEqCompData::Compile()
 			if(parentId != 0)
 				{
 				TMLEqCompDataTable* parentTable = FindTable(parentId);
-				TMLEqCompDataLine* parentLine = iComponents[parentId];
 				if(parentTable)
 					{
 					line.iParentTable = parentTable;

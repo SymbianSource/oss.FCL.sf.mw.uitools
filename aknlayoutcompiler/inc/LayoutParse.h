@@ -26,6 +26,7 @@
 #include <iosfwd>
 #include "LayoutCompilerErr.h"
 #include "Layout.h"
+#include <memory>
 using namespace std;
 
 

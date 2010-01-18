@@ -23,7 +23,9 @@ TARGETTYPE  EXE
 SYSTEMINCLUDE     .
 SYSTEMINCLUDE     ../inc
 SYSTEMINCLUDE   ../../inc
-SYSTEMINCLUDE   ../../inc/arabica
+
+SYSTEMINCLUDE   ../../toollibraries/arabica/include
+SYSTEMINCLUDE   ../../toollibraries/xerces-c/include
 
 MW_LAYER_SYSTEMINCLUDE
 
@@ -31,6 +33,7 @@ MW_LAYER_SYSTEMINCLUDE
 // line builds. STL code generates too many warnings at level 4, but is clean at
 // level 3. Also require RTTI.
 option MSVC /GX /W3 /GR
+option GCC -DXML_LIBRARY
 
 SOURCEPATH      ../src
 
@@ -76,31 +79,35 @@ source          MLEqCompData2DHuiML.cpp
 source          ZoomLevelNames.cpp
 source          MasterLayoutPack.cpp
 
-#ifndef SBSV2
-  start CW32
-    win32_library /epoc32/release/cwtools/rel/CdlCompilerToolkit.lib
-  end
+// #ifndef SBSV2
+//   start CW32
+//     win32_library /epoc32/release/cwtools/rel/CdlCompilerToolkit.lib
+//   end
 
-  start VC32
-    win32_library /epoc32/release/tools/rel/CdlCompilerToolkit.lib
-  end
-#else 
-  START TOOLS
-    #if defined(CW32) 
-      win32_library /epoc32/release/cwtools/rel/CdlCompilerToolkit.lib
-    #elif defined(VC32)
-      win32_library /epoc32/release/tools/rel/CdlCompilerToolkit.lib
-    #endif
-  END
-#endif
+//   start VC32
+//     win32_library /epoc32/release/tools/rel/CdlCompilerToolkit.lib
+//   end
+// #else 
+//   START TOOLS
+//     #if defined(CW32) 
+//       win32_library /epoc32/release/cwtools/rel/CdlCompilerToolkit.lib
+//     #elif defined(VC32)
+//       win32_library /epoc32/release/tools/rel/CdlCompilerToolkit.lib
+//     #endif
+//   END
+// #endif
 
-start TOOLS
-#ifdef RD_XML_PARSER_TOOLCHAIN
-win32_library /epoc32/release/tools/rel/Arabica.lib
-win32_library /epoc32/release/tools/rel/xerces-c_2.lib
-#endif
-win32_library Advapi32.lib 
-end
+// start TOOLS
+// #ifdef RD_XML_PARSER_TOOLCHAIN
+// win32_library /epoc32/release/tools/rel/Arabica.lib
+// win32_library /epoc32/release/tools/rel/xerces-c_2.lib
+// #endif
+// win32_library Advapi32.lib 
+// end
+
+staticlibrary CdlCompilerToolkit
+staticlibrary arabica
+staticlibrary xerces-c
 
 
 // End of File

@@ -136,7 +136,7 @@ START RESOURCE	 $UID.rss\n\
 TARGET       $UID.rsc\n\
 END\n\
 START RESOURCE   $UID_cdl_detail.rss\n\
-TARGETPATH       resource\\cdl\n\
+TARGETPATH       resource/cdl\n\
 END\n\
 \n\
 $EXTRA";
@@ -146,15 +146,20 @@ const string KMmpLibLine = "library          $NAME\n";
 
 void CCdlTkWriteDll::WriteMmp() const
 	{
-	string name = CdlTkUtil::ToLower(CdlTkUtil::OutputPath() + iDll.Name() + ".mmp");
+	string name = CdlTkUtil::OutputPath() + CdlTkUtil::ToLower(iDll.Name() + ".mmp");
 	ofstream stream;
 	CCdlTkFileCleanup tempFile;
 	CdlTkUtil::OpenTempOutput(stream, tempFile);
 
 	string source;
 	for (CCdlTkDll::CInstances::const_iterator pName = iDll.Instances().begin(); pName != iDll.Instances().end(); ++pName)
-		CdlTkUtil::AppendString(source, CdlTkUtil::Replace("$NAME", CdlTkUtil::CorrectFilenameCase(*pName), KMmpSourceLine));
+		{
+		string tempPName = CdlTkUtil::Replace("\r", "", *pName);
+		tempPName = CdlTkUtil::Replace("\n", "", tempPName);
 
+		CdlTkUtil::AppendString(source, CdlTkUtil::Replace("$NAME", CdlTkUtil::CorrectFilenameCase(tempPName), KMmpSourceLine));
+
+		}
 	string libraries;
 	for (CCdlTkDll::CLibraries::const_iterator pLib = iDll.Libraries().begin(); pLib != iDll.Libraries().end(); ++pLib)
 		CdlTkUtil::AppendString(libraries, CdlTkUtil::Replace("$NAME", *pLib, KMmpLibLine));
@@ -185,7 +190,7 @@ const string KMainCpp = "\
 * Copyright (c) 2009 Nokia Corporation and/or its subsidiary(-ies).\n\
 * All rights reserved.\n\
 * This component and the accompanying materials are made available\n\
-* under the terms of \"Eclipse Public License v1.0\"\n\
+* under the terms of  \"Eclipse Public License v1.0\"\n\
 * which accompanies this distribution, and is available\n\
 * at the URL \"http://www.eclipse.org/legal/epl-v10.html\".\n\
 *\n\
@@ -243,7 +248,7 @@ string KMainCppInstance = "\t\tCDL_CUSTOMISATION($CPP_NAME),\n";
 
 void CCdlTkWriteDll::WriteMainCpp() const
 	{
-	string name = CdlTkUtil::CorrectFilenameCase(CdlTkUtil::OutputPath() + iDll.Name() + ".cpp");
+	string name = CdlTkUtil::OutputPath() + CdlTkUtil::CorrectFilenameCase(iDll.Name() + ".cpp");
 	ofstream stream;
 	CCdlTkFileCleanup tempFile;
 	CdlTkUtil::OpenTempOutput(stream, tempFile);
@@ -252,8 +257,11 @@ void CCdlTkWriteDll::WriteMainCpp() const
 	string instances;
 	for (CCdlTkDll::CInstances::const_iterator pName = iDll.Instances().begin(); pName != iDll.Instances().end(); ++pName)
 		{
-		CdlTkUtil::AppendString(includes, CdlTkUtil::Replace("$NAME", CdlTkUtil::ToLower(*pName), KMainCppInclude));
-		CdlTkUtil::AppendString(instances, CdlTkUtil::Replace("$CPP_NAME", CdlTkUtil::ToCpp(*pName), KMainCppInstance));
+		string tempPName = CdlTkUtil::Replace("\r", "", *pName);
+		tempPName = CdlTkUtil::Replace("\n", "", tempPName);
+
+		CdlTkUtil::AppendString(includes, CdlTkUtil::Replace("$NAME", CdlTkUtil::ToLower(tempPName), KMainCppInclude));
+		CdlTkUtil::AppendString(instances, CdlTkUtil::Replace("$CPP_NAME", CdlTkUtil::ToCpp(tempPName), KMainCppInstance));
 		}
 
 	stringstream majorVer;
@@ -286,7 +294,7 @@ const string KInstHeaderBody = "\
 * Copyright (c) 2009 Nokia Corporation and/or its subsidiary(-ies).\n\
 * All rights reserved.\n\
 * This component and the accompanying materials are made available\n\
-* under the terms of \"Eclipse Public License v1.0\"\n\
+* under the terms of  \"Eclipse Public License v1.0\"\n\
 * which accompanies this distribution, and is available\n\
 * at the URL \"http://www.eclipse.org/legal/epl-v10.html\".\n\
 *\n\
@@ -311,7 +319,7 @@ const string KInstHeaderId = "#define $ID $NUM\n";
 
 void CCdlTkWriteDll::WriteInstanceIdHeader() const
 	{
-	string name = CdlTkUtil::ToLower(CdlTkUtil::OutputPath() + KDllInstHeader);
+	string name = CdlTkUtil::OutputPath() + CdlTkUtil::ToLower(KDllInstHeader);
 	ofstream stream;
 	CCdlTkFileCleanup tempFile;
 	CdlTkUtil::OpenTempOutput(stream, tempFile);
@@ -328,7 +336,10 @@ void CCdlTkWriteDll::WriteInstanceIdHeader() const
 		}
 
 	CdlTkUtil::CReplaceSet headerSet;
-	headerSet.Add("$DLL_NAME", iDll.Name());
+	string dllName = iDll.Name();
+	dllName = CdlTkUtil::Replace("\r", "", dllName);
+	dllName = CdlTkUtil::Replace("\n", "", dllName);
+	headerSet.Add("$DLL_NAME", dllName);
 	headerSet.Add("$IDS", ids);
 	headerSet.Add("$CMDLINE", CdlTkUtil::CommandLine());
 	string header = CdlTkUtil::MultiReplace(headerSet, KInstHeaderBody);
@@ -344,7 +355,7 @@ const string KEComRss = "\
 * Copyright (c) 2009 Nokia Corporation and/or its subsidiary(-ies).\n\
 * All rights reserved.\n\
 * This component and the accompanying materials are made available\n\
-* under the terms of \"Eclipse Public License v1.0\"\n\
+* under the terms of  \"Eclipse Public License v1.0\"\n\
 * which accompanies this distribution, and is available\n\
 * at the URL \"http://www.eclipse.org/legal/epl-v10.html\".\n\
 *\n\
@@ -357,7 +368,7 @@ const string KEComRss = "\
 *\n\
 */\n\n\
 #include <ecom/registryinfo.rh>\n\
-#include <cdlecom.hrh>\n\
+#include <CdlEcom.hrh>\n\
 \n\
 CDL_ECOM_MAIN_REG_WITH_VERSION(0x$DLLUID, $DLLVER)\n";
 
@@ -365,7 +376,7 @@ void CCdlTkWriteDll::WriteEcomRss() const
 	{
 	string dllUid = CdlTkUtil::IntToHexString(iDll.Uid()).substr(2);
 	string dllVer = CdlTkUtil::IntToString(iDll.Version());
-	string name = CdlTkUtil::ToLower(CdlTkUtil::OutputPath() + dllUid + ".rss");
+	string name = CdlTkUtil::OutputPath() + CdlTkUtil::ToLower(dllUid + ".rss");
 	ofstream stream;
 	CCdlTkFileCleanup tempFile;
 	CdlTkUtil::OpenTempOutput(stream, tempFile);
@@ -398,8 +409,8 @@ const string KEComDetailRss = "\
 * Description:\n\
 *\n\
 */\n\n\
-#include <cdlecom.rh>\n\
-#include <cdlecom.hrh>\n\
+#include <CdlEcom.rh>\n\
+#include <CdlEcom.hrh>\n\
 \n\
 $INCLUDES\
 \n\
@@ -413,7 +424,7 @@ string KDetailRssInstance = "\tCDL_ECOM_DETAIL_IMPL($CPP_NAME)\n";
 void CCdlTkWriteDll::WriteEcomDetailRss() const
 	{
 	string dllUid = CdlTkUtil::IntToHexString(iDll.Uid()).substr(2);
-	string name = CdlTkUtil::ToLower(CdlTkUtil::OutputPath() + dllUid + "_cdl_detail.rss");
+	string name = CdlTkUtil::OutputPath() + CdlTkUtil::ToLower(dllUid + "_cdl_detail.rss");
 	ofstream stream;
 	CCdlTkFileCleanup tempFile;
 	CdlTkUtil::OpenTempOutput(stream, tempFile);
@@ -423,10 +434,12 @@ void CCdlTkWriteDll::WriteEcomDetailRss() const
 	CCdlTkDll::CInstances::const_iterator begin = iDll.Instances().begin();
 	for (CCdlTkDll::CInstances::const_iterator pName = begin; pName != iDll.Instances().end(); ++pName)
 		{
+		string tempPName = CdlTkUtil::Replace("\r", "", *pName);
+		tempPName = CdlTkUtil::Replace("\n", "", tempPName);
 		string instance = (pName != begin) ? "," : "";
-		instance += CdlTkUtil::Replace("$CPP_NAME", CdlTkUtil::ToCpp(*pName), KDetailRssInstance);
+		instance += CdlTkUtil::Replace("$CPP_NAME", CdlTkUtil::ToCpp(tempPName), KDetailRssInstance);
 		CdlTkUtil::AppendString(instances, instance);
-		CdlTkUtil::AppendString(includes, CdlTkUtil::Replace("$NAME", CdlTkUtil::ToLower(*pName), KDetailRssInclude));
+		CdlTkUtil::AppendString(includes, CdlTkUtil::Replace("$NAME", CdlTkUtil::ToLower(tempPName), KDetailRssInclude));
 		}
 
 	CdlTkUtil::CReplaceSet rssSet;

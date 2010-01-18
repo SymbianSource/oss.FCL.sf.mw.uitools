@@ -16,13 +16,18 @@
 */
 #include <platform_paths.hrh>
 
+#ifdef TOOLS2
+target                  libCdlCompilerToolkit
+#else 
 target                  CdlCompilerToolkit.lib
+#endif
+
 targettype              LIB
 
-USERINCLUDE			../inc
+USERINCLUDE			../inc 
 MW_LAYER_SYSTEMINCLUDE
 
-option MSVC /GX /W3
+option MSVC /W3 /EHsc
 
 sourcepath              ../src 
 
@@ -43,3 +48,4 @@ source CdlTkWriteDll.cpp
 source CdlTkWriteInstance.cpp
 
 // End of File
+

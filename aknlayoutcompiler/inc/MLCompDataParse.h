@@ -52,7 +52,7 @@ using namespace std;
 class MSaxLayoutHandler
 	{
 public:
-	typedef SAX::basic_Attributes<std::string> TAttribs;
+	typedef Arabica::SAX::Attributes<std::string> TAttribs;
 	virtual MSaxLayoutHandler* HandleSax(const std::string& aElement, const TAttribs& aAttribs) { return this; };
 	virtual void HandleSaxEnd(const std::string& aElement) { };
 	};
@@ -155,18 +155,18 @@ public: // from MSaxLayoutHandler
 	};
 
 
-class TLayoutSaxParser : private SAX::basic_DefaultHandler<std::string>
+class TLayoutSaxParser : private Arabica::SAX::DefaultHandler<std::string>
 	{
 private:
 	typedef stack<MSaxLayoutHandler*> TSaxHandlerStack;
-	typedef SAX::basic_ErrorHandler<std::string>::SAXParseExceptionT TException;
+	typedef Arabica::SAX::ErrorHandler<std::string>::SAXParseExceptionT TException;
 
 public:
 	TLayoutSaxParser(MSaxLayoutHandler* aHandler);
 	void Parse(const std::string& aFileName);
 
 private: // from basic_DefaultHandler
-	void startElement(const std::string& namespaceURI, const std::string& localName, const std::string& qName, const SAX::basic_Attributes<std::string>& atts);
+	void startElement(const std::string& namespaceURI, const std::string& localName, const std::string& qName, const Arabica::SAX::Attributes<std::string>& atts);
 	void endElement(const std::string& namespaceURI, const std::string& localName, const std::string& qName);
 
 	void warning(const TException& aException);

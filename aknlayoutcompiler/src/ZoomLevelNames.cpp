@@ -26,9 +26,9 @@
 #include "LayoutCompilerErr.h"
 #include "CodeGenConsts.h"
 
-#include <cdlcompilertoolkit/cdltkutil.h>
+#include <CdlCompilerToolkit/CdlTkUtil.h>
 
-#include <akndef.hrh>
+#include <AknDef.hrh>
 
 #include <fstream>
 #include <iostream>
@@ -71,7 +71,7 @@ void CZoomLevelNames::ProcessOptions(vector<string>& aArgs)
 		while (!in.eof())
 			{
 			getline(in, line);
-			int comma = line.find(",");
+			string::size_type comma = line.find(",");
 			if(comma == string::npos)
 				{
 				cerr << "Zoom file incorrect format." << endl;

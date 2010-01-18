@@ -28,7 +28,7 @@
 #include <vector>
 #include <algorithm>
 #include <iostream>
-#include "extract.h"
+#include "Extract.h"
 #include "LayoutCompilerErr.h"
 #include "Lay2Cdl.h"
 #include "Cdl2Lag.h"
@@ -107,7 +107,7 @@ int DoMain(int argc, char* argv[])
 		args.erase(args.begin()+1);
 		}
 
-	string& modeName = CdlTkUtil::ToLower(args[1]);
+	string modeName = CdlTkUtil::ToLower(args[1]);
 
 	if (modeName == "extract")
 		{

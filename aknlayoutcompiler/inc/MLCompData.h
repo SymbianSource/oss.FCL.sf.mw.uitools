@@ -251,8 +251,6 @@ public: // member data
 	TMLCompDataLine* iLine; // not owned
 	};
 
-
-
 /**
 *  TMLCompDataTable 
 *  A layout table

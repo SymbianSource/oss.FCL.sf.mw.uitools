@@ -22,7 +22,7 @@
 #include <string>
 #include <vector>
 #include <iosfwd>
-#include <cdlcompilertoolkit/cdltkprocess.h>
+#include <CdlCompilerToolkit/CdlTkProcess.h>
 using namespace CdlCompilerToolkit;
 using namespace std;
 

@@ -24,7 +24,7 @@
 #include "LayoutCompilerErr.h"
 #include "FormulaTree.h"
 
-#include <cdlcompilertoolkit/cdltkprocess.h>
+#include <CdlCompilerToolkit/CdlTkProcess.h>
 
 #include <fstream>
 #include <iostream>
@@ -188,7 +188,7 @@ int MLEqCompDataToDHuiML::Process(const vector<string>& args)
 	cout << "writing dhuiml file " << dhuimlName << endl;
 	ofstream dhuiml(dhuimlName.c_str());
 
-	int KIndent = 4;
+	//int KIndent = 4;
 	TEqLayoutSaxWriter saxWriter(dhuiml);
 	saxWriter.StartDocument();
 

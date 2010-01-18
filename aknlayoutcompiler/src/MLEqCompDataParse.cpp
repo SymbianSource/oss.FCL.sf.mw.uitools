@@ -23,7 +23,7 @@
 
 #include "MLEqCompDataParse.h"
 
-#include <akndef.hrh>
+#include <AknDef.hrh>
 
 #include <sstream>
 #include <fstream>
@@ -701,15 +701,15 @@ TEqLayoutSaxParser::TEqLayoutSaxParser(MSaxLayoutEqHandler* aHandler)
 
 void TEqLayoutSaxParser::Parse(const std::string& aFileName)
 	{
-	SAX::basic_InputSource<std::string> is(aFileName);
-	SAX::XMLReader<std::string> parser;
+	Arabica::SAX::InputSource<std::string> is(aFileName);
+	Arabica::SAX::XMLReader<std::string> parser;
 	parser.setContentHandler(*this);
 	parser.setErrorHandler(*this);
 	parser.parse(is);
 	}
 
 void TEqLayoutSaxParser::startElement(const std::string& /*namespaceURI*/, const std::string& localName,
-                              const std::string& /*qName*/, const SAX::basic_Attributes<std::string>& atts)
+                              const std::string& /*qName*/, const Arabica::SAX::Attributes<std::string>& atts)
     {
 	MSaxLayoutEqHandler* handler = iStack.top();
 	if (!handler)

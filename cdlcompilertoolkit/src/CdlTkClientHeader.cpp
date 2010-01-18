@@ -95,7 +95,7 @@ const string KBodyStart = "\
 * Copyright (c) 2009 Nokia Corporation and/or its subsidiary(-ies).\n\
 * All rights reserved.\n\
 * This component and the accompanying materials are made available\n\
-* under the terms of  \"Eclipse Public License v1.0\"\n\
+* under the terms of \"Eclipse Public License v1.0\"\n\
 * which accompanies this distribution, and is available\n\
 * at the URL \"http://www.eclipse.org/legal/epl-v10.html\".\n\
 *\n\
@@ -116,7 +116,7 @@ $ADDITIONAL\
 #ifndef $CDLGUARD\n\
 #define $CDLGUARD\n\
 \n\
-#include <cdlengine.h>\n\
+#include <CdlEngine.h>\n\
 #include <$FILE.common.h>\n\
 \n\
 namespace $CDLNS\n\
@@ -174,7 +174,7 @@ const string KBodyEndNameSpace = "\
 } // end of namespace $CDLNS\n\
 #endif // $CDLGUARD\n";
 
-const int KMsvcClassMaxSize = 1000;
+const unsigned int KMsvcClassMaxSize = 1000;
 const string KTypeInfoOn = "on";
 const string KTypeInfoOff = "off";
 

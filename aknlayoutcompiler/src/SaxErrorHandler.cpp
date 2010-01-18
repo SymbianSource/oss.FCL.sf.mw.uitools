@@ -23,17 +23,17 @@
 
 #include "SaxErrorHandler.h"
 
-void SAXErrorHandler::warning(const SAX::SAXParseException& exception)
+void SAXErrorHandler::warning(const Arabica::SAX::SAXParseException<std::string>& exception)
 {
   std::cerr << "WARNING: " << exception.what() << std::endl;
 } // warning
 
-void SAXErrorHandler::error(const SAX::SAXParseException& exception)
+void SAXErrorHandler::error(const Arabica::SAX::SAXParseException<std::string>& exception)
 {
   std::cerr << "ERROR  : " << exception.what() << std::endl;
 } // error
 
-void SAXErrorHandler::fatalError(const SAX::SAXParseException& exception)
+void SAXErrorHandler::fatalError(const Arabica::SAX::SAXParseException<std::string>& exception)
 {
   std::cerr << "FATAL  : " << exception.what() << std::endl;
 } // fatalError

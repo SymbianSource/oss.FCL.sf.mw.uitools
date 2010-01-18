@@ -36,7 +36,9 @@ CCdlTkWriteInstance::~CCdlTkWriteInstance()
 
 void CCdlTkWriteInstance::Process()
 	{
-	string implName = CdlTkUtil::ToLower(CdlTkUtil::OutputPath() + CdlTkUtil::StripPath(iInstance.Name()));
+	string implName = CdlTkUtil::ToLower( CdlTkUtil::StripPath(iInstance.Name()));
+	implName = CdlTkUtil::Replace("\r","",implName);
+	implName = CdlTkUtil::Replace("\n","",implName);
 	string headerName(implName + ".h");
 	InitReplace(headerName);
 	ProcessCdl();
@@ -47,30 +49,35 @@ void CCdlTkWriteInstance::Process()
 	CdlTkUtil::OpenTempOutput(hrhStream, tempFile);
 	ProcessInstanceHrh(hrhStream, headerName+"rh");
 	hrhStream.close();
-	CdlTkUtil::ExportFileIfWritable(tempFile, headerName+"rh");
+	CdlTkUtil::ExportFileIfWritable(tempFile, CdlTkUtil::OutputPath() + headerName+"rh");
 
 	ofstream headerStream;
 	CdlTkUtil::OpenTempOutput(headerStream, tempFile);
 	ProcessInstanceHeader(headerStream, headerName);
 	headerStream.close();
-	CdlTkUtil::ExportFileIfWritable(tempFile, headerName);
+	CdlTkUtil::ExportFileIfWritable(tempFile, CdlTkUtil::OutputPath() + headerName);
 
 	ofstream cppStream;
 	CdlTkUtil::OpenTempOutput(cppStream, tempFile);
 	ProcessInstance(cppStream, headerName);
 	cppStream.close();
-	CdlTkUtil::ExportFileIfWritable(tempFile, CdlTkUtil::CorrectFilenameCase(implName + ".cpp"));
+
+	CdlTkUtil::ExportFileIfWritable(tempFile, CdlTkUtil::OutputPath() + CdlTkUtil::CorrectFilenameCase(implName + ".cpp"));
 	}
 
 void CCdlTkWriteInstance::InitReplace(const std::string& aHeaderName)
 	{
 	iReplace.clear();
-	iReplace.Add("$INSTNAME", iInstance.Name());
+	string instanceName = iInstance.Name();
+	instanceName = CdlTkUtil::Replace("\r", "", instanceName);
+	instanceName = CdlTkUtil::Replace("\n", "", instanceName);
+	iReplace.Add("$INSTNAME", instanceName);
 	iReplace.Add("$CDLNAME", CdlTkUtil::StripPath(iCdl.FileName()));
 	iReplace.Add("$CDLINCNAME", CdlTkUtil::ToLower(CdlTkUtil::StripPath(iCdl.FileName())));
 	iReplace.Add("$HEADERNAME", CdlTkUtil::ToLower(CdlTkUtil::StripPath(aHeaderName)));
 	iReplace.Add("$EXTRA", iInstance.ExtraCpp());
 	iReplace.Add("$INSTNS", CdlTkUtil::ToCpp(iInstance.Name()));
+
 	iReplace.Add("$CDLNS", iCdl.NamespaceName());
 	iReplace.Add("$CDLGUARD", HeaderGuardName(iCdl.FileName() + ".custom.h"));
 	iReplace.Add("$INSTGUARD", HeaderGuardName(aHeaderName));
@@ -92,7 +99,6 @@ void CCdlTkWriteInstance::ProcessCdl() const
 	AssertInterfaceNotExtended(iCdl);
 
 	string baseName = CdlBaseNameAndPath(iCdl);
-
 	string commonHeaderName(baseName + KCommonHeader);
 	CCdlTkWriteCommonDefs::ExportCommonDefs(iCdl, commonHeaderName);
 

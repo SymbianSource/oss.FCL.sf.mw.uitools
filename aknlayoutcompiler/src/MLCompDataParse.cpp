@@ -23,7 +23,7 @@
 
 #include "MLCompDataParse.h"
 
-#include <akndef.hrh>
+#include <AknDef.hrh>
 
 #include <sstream>
 #include <fstream>
@@ -489,7 +489,7 @@ void TMLCompDataParseLayoutLine::HandleSaxAttributes(const TAttribs& aAttribs)
 	string maxVarietyStr = aAttribs.getValue(KCompDataParseNodeComponentAttributeMaxVariety);
 	if(!maxVarietyStr.empty()) // screen doesn't have maxVariety for some reason
 		{
-		int maxVariety = CdlTkUtil::ParseInt(maxVarietyStr) - 2;
+		//int maxVariety = CdlTkUtil::ParseInt(maxVarietyStr) - 2;
 		// we ignore the maxVariety for now, as it will be calculated by parsing the values
 		}
 	}
@@ -694,7 +694,7 @@ auto_ptr<TMLCompDataParseLayout> TMLCompDataParseLayout::Parse(const string& aLa
 	auto_ptr<TMLCompDataParseLayout> layout(new TMLCompDataParseLayout);
 	int pos=0;
 	string layName = aLayName;
-	int next = layName.find('+', pos);
+	string::size_type next = layName.find('+', pos);
 	if (next != string::npos)
 		{
 		throw GeneralErr(layName + " TMLCompDataParseLayout::Parse() - doesn't support multiple files");
@@ -724,15 +724,15 @@ TLayoutSaxParser::TLayoutSaxParser(MSaxLayoutHandler* aHandler)
 
 void TLayoutSaxParser::Parse(const std::string& aFileName)
 	{
-	SAX::basic_InputSource<std::string> is(aFileName);
-	SAX::XMLReader<std::string> parser;
+	Arabica::SAX::InputSource<std::string> is(aFileName);
+	Arabica::SAX::XMLReader<std::string> parser;
 	parser.setContentHandler(*this);
 	parser.setErrorHandler(*this);
 	parser.parse(is);
 	}
 
 void TLayoutSaxParser::startElement(const std::string& /*namespaceURI*/, const std::string& localName,
-                              const std::string& /*qName*/, const SAX::basic_Attributes<std::string>& atts)
+                              const std::string& /*qName*/, const Arabica::SAX::Attributes<std::string>& atts)
     {
 	MSaxLayoutHandler* handler = iStack.top();
 	if (!handler)

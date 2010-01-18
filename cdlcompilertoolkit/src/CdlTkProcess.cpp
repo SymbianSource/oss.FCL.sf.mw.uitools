@@ -31,7 +31,7 @@ CCdlTkProcess::~CCdlTkProcess()
 
 string CCdlTkProcess::CdlBaseNameAndPath(const CCdlTkInterface& aCdl)
 	{
-	return CdlTkUtil::ToLower(CdlTkUtil::OutputPath() + CdlTkUtil::StripPath(aCdl.FileName()));
+	return CdlTkUtil::OutputPath() + CdlTkUtil::ToLower(CdlTkUtil::StripPath(aCdl.FileName()));
 	}
 
 void CCdlTkProcess::AssertInterfaceNotExtended(const CCdlTkInterface& aCdl)

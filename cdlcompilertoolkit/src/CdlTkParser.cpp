@@ -21,7 +21,8 @@
 #include <iostream>
 using namespace std;
 
-namespace CdlCompilerToolkit {
+namespace CdlCompilerToolkit
+ {
 
 //
 // SyntaxErr
@@ -189,7 +190,7 @@ void CCdlTkCdlFileParser::ParseApi(CCdlTkInterface& aCdl, const string& aLine)
 		{
 		// add the line to the API buffer
 		CdlTkUtil::AppendString(iApiBuf, line);
-		int pos;
+		string::size_type pos;
 		// extract API declarations from the API buffer, separated by semi-colons
 		while ((pos = iApiBuf.find_first_of(';')) != string::npos)
 			{
@@ -239,7 +240,6 @@ bool CCdlTkCdlFileParser::MatchLineStart(const string& aLine, const string& aHea
 	{
 	if (aLine.size() < aHeader.size() || aLine.substr(0, aHeader.size()) != aHeader)
 		return false;
-
 	aVal = aLine.substr(aHeader.size());
 	StripComments(aVal, iComment);
 	CdlTkUtil::StripLeadingAndTrailingWhitespace(aVal);
@@ -248,7 +248,7 @@ bool CCdlTkCdlFileParser::MatchLineStart(const string& aLine, const string& aHea
 
 void CCdlTkCdlFileParser::StripComments(string& aStr, string& aComment)
 	{
-	int pos = aStr.find(KCommentStart);
+	string::size_type pos = aStr.find(KCommentStart);
 	if (pos != string::npos)
 		{
 		aComment += aStr.substr(pos) + "\n";
@@ -263,7 +263,7 @@ auto_ptr<CCdlTkApi> CCdlTkCdlFileParser::CreateApi(CCdlTkInterface& aCdl, string
 	if (isFunc)
 		{
 		auto_ptr<CCdlTkFunctionApi> pFuncApi(new CCdlTkFunctionApi(aCdl));
-		int paramStart = aLine.find('(');
+		string::size_type paramStart = aLine.find('(');
 		if (paramStart == string::npos)
 			SyntaxError("function has missing '('");
 		string params = aLine.substr(paramStart);
@@ -291,7 +291,7 @@ void CCdlTkCdlFileParser::ParseApiParams(CCdlTkApiParams& aParams, string& aList
 	{
 	while (aList.size())
 		{
-		int pos = aList.find(',');
+		string::size_type pos = aList.find(',');
 		string param = aList.substr(0, pos);
 		aList = aList.substr(param.size() + (pos == string::npos ? 0 : 1));
 		CdlTkUtil::StripLeadingAndTrailingWhitespace(aList);
@@ -306,7 +306,7 @@ void CCdlTkCdlFileParser::ParseApiParams(CCdlTkApiParams& aParams, string& aList
 void CCdlTkCdlFileParser::ParseNameTypeAndDefaultValue(string& aStr, string& aName, string& aType, string& aDefaultValue)
 	{
 	CdlTkUtil::StripLeadingAndTrailingWhitespace(aStr);
-	int eq = aStr.find_last_of(KEqualsSign);
+	string::size_type eq = aStr.find_last_of(KEqualsSign);
 	if(eq != string::npos)
 		{
 		aDefaultValue = aStr.substr(eq + 1);
@@ -326,10 +326,10 @@ void CCdlTkCdlFileParser::ParseNameTypeAndDefaultValue(string& aStr, string& aNa
 
 void CCdlTkCdlFileParser::ParseTranslationText(CCdlTkDataTypeTranslation& aTrans, string& aLine)
 	{
-	int pos1 = aLine.find('#');
+	string::size_type pos1 = aLine.find('#');
 	if (pos1 == string::npos)
 		SyntaxError("First # not found");
-	int pos2 = aLine.find('#', pos1+1);
+	string::size_type pos2 = aLine.find('#', pos1+1);
 	if (pos2 == string::npos)
 		SyntaxError("Second # not found");
 	if (aLine.find('#', pos2+1) != string::npos)

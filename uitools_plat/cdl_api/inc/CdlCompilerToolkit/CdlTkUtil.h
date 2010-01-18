@@ -145,6 +145,14 @@ public:
     */
 	static bool IsCpp(char aChar);
 
+    /**
+     * Is the character equal to '\\' or '/' ? 
+     * @param aChar the character to test
+     * @return true if the character is a path separator
+     */
+	static bool IsPathSeparator(char aChar);
+	static std::string::size_type FindFirstPathSeparator(const std::string& s);
+	static std::string::size_type FindLastPathSeparator(const std::string& s);
 	/**
     * This class contains a set of terms to replace in a string. It is used
 	* with CdlTkUtil::MultiReplace().
@@ -276,7 +284,7 @@ public:
 		std::string::const_iterator pWord = pChar;
 		for (; ; ++pChar)
 			{
-			if (pChar == aString.end() || ws.find_first_of(*pChar) != string::npos)
+			  if (pChar == aString.end() || ws.find_first_of(*pChar) != std::string::npos)
 				{
 				if (pWord != pChar)
 					{

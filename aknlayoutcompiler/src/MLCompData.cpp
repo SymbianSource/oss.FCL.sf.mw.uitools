@@ -26,7 +26,7 @@
 #include "CodeGenConsts.h"
 #include "UsefulDefinitions.h"
 
-#include "Akndef.hrh"
+#include <AknDef.hrh>
 
 #include <set>
 #include <sstream>
@@ -191,7 +191,7 @@ void TMLCompDataValues::Compile(const string& aCellName)
 		int thisSize = size();
 		int numVarieties = iLine->MaxVariety() + 1; // get zero based index
 		int maximum = max(numVarieties, thisSize);
-		int maxMulti;
+		unsigned int maxMulti;
 		switch(TMLCompDataValues::Type(aCellName))
 			{
 			case ECellTypeCol:
@@ -294,21 +294,21 @@ void TMLCompDataParentInfo::Merge(const TMLCompDataParentInfo& aOther)
 
 TMLCompDataLine::TMLCompDataLine()
 :	iId(0),
-	iIsUnique(true), 
-	iIsMirroredHorizontally(false),
+	iName(KCompDataUnknown), 
 	iType(EUnknownComponent),
-	iName(KCompDataUnknown),
 	iDrawingOrder(-1),
 	iMaxVariety(0),
 	iParentTable(0),
 	iParentInfo(0),
 	iAttributeInfo(0),
-	iNumCols(1),
-	iNumRows(1),
+	iIsUnique(true),
+	iGlobalIndex(0),
+	iIsMirroredHorizontally(false),
 	iNeedsOptions(false),
 	iNeedsCols(false),
 	iNeedsRows(false),
-	iGlobalIndex(0)
+	iNumCols(1),
+	iNumRows(1)
 	{	
 		
 	}
@@ -445,6 +445,7 @@ TMLAttributeZoomLevels* TMLCompDataLine::GetAttributeZoomLevels(string aAttribNa
 	TMLCompData& data = *(iParentTable->iTables);
 	TMLAttributes& attributes = *(data.iAttributes);
 	int attribId = attributes.iNames[aAttribName];
+
 	if(attribId == 0)
 		throw GeneralErr(string("Attribute name not found: ") + aAttribName);
 	// find out from attribute info which attribute set we need
@@ -850,24 +851,27 @@ bool TMLCompDataTable::TMLCompDataSubTable::NeedsParams() const
 
 TMLCompDataTable::TMLCompDataTable(TMLCompData* aTables)
 	: 
-	iTables(aTables), 
-	iParentLine(NULL), 
-	iFirstLineGlobalIndex(-1), 
-	iAppend(false),
 	iId(0),
+	iTables(aTables), 
+	iParentLine(NULL),
 	iNeedsP(false),
-	iNeedsIndex(false)
+	iNeedsIndex(false),
+	iAppend(false),
+	iFirstLineGlobalIndex(-1)
 	{
 	}
 
 TMLCompDataTable::TMLCompDataTable(TMLCompData* aTables, const TMLCompDataTable& aOther)
 	: 
-	iTables(aTables), 
+	iId(aOther.iId),
+	iName(aOther.iName),
+	iTables(aTables),
+	iColumnNames(aOther.iColumnNames),
 	iParentLine(NULL), 
-	iFirstLineGlobalIndex(aOther.iFirstLineGlobalIndex), 
-	iAppend(aOther.iAppend), iColumnNames(aOther.iColumnNames), iName(aOther.iName),
 	iParentName(aOther.iParentName),
-  	iId(aOther.iId)
+	iAppend(aOther.iAppend),
+	iFirstLineGlobalIndex(aOther.iFirstLineGlobalIndex)
+
 	{
 	for (const_iterator pLine = aOther.begin(); pLine != aOther.end(); ++pLine)
 		push_back(new TMLCompDataLine(**pLine));
@@ -912,7 +916,7 @@ TMLCompDataTable::TMLCompDataSubTable* TMLCompDataTable::FindSubTable(const stri
 		string subTableName = MLCompDataToCdl::SubTableApiName(sub);
 		string subTableLimitsName = MLCompDataToCdl::SubTableLimitsApiName(sub);
 		string paramLimitsName = MLCompDataToCdl::SubTableParamLimtsApiName(sub);
-		TMLCompDataLine& line = *((*this)[0]);
+		
 		// first check the lines for a direct match
 		// then try the param limits instead
 		if (subTableName == aName ||
@@ -1064,13 +1068,11 @@ bool TMLCompDataTable::IsVerticalColumn(string aName)
 
 
 const string KPaneColumnNames[] = {"Item", "C", "l", "t", "r", "b", "W", "H", "Remarks"};
-const string KGraphicColumnNames[] = {"Item", "C", "l", "t", "r", "b", "W", "H", "Remarks"};
-const string KTextColumnNames[] = {"Font", "C", "l", "r", "t", "b", "W", "H", "J", "Remarks"};
 
 void TMLCompDataTable::SetDefaultColumnNames()
 	{
 	iColumnNames.clear();
-	iColumnNames.insert(iColumnNames.end(), KPaneColumnNames, ARRAY_END(KTextColumnNames)); // superset
+    iColumnNames.insert(iColumnNames.end(), KPaneColumnNames, ARRAY_END(KPaneColumnNames));
 	}
 
 TMLCompDataTable::TMLCompDataSubTable::TMLCompDataSubTable()
@@ -1232,7 +1234,7 @@ void TMLCompData::Compile()
 				TMLCompDataParentInfoSelector& selector = (parentInfo.begin())->second; // we ignore the varieties for now
 				parentId = selector.iParentId;
 				TMLCompDataTable* parentTable = FindTable(parentId);
-				TMLCompDataLine* parentLine = iComponents[parentId];
+
 				if(parentTable)
 					{
 					line.iParentTable = parentTable;

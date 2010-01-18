@@ -25,7 +25,7 @@
 #include "LayoutCompilerErr.h"
 #include "LayoutParse.h"
 #include "Lay2Cdl.h"
-#include <cdlcompilertoolkit/cdltkprocess.h>
+#include <CdlCompilerToolkit/CdlTkProcess.h>
 using namespace std;
 using namespace CdlCompilerToolkit;
 
@@ -58,7 +58,7 @@ int LayCdlCheck::Process(const vector<string>& args)
 	auto_ptr<CCdlTkInterface> xIface(new CCdlTkInterface);
 	CCdlTkApiList& xApiList = xIface->ApiList();
 
-	for (int arg = nextArg; arg < args.size(); arg++)
+	for (unsigned int arg = nextArg; arg < args.size(); arg++)
 		{
 		string fileName = args[arg];
 		if (fileName.size() < 4)

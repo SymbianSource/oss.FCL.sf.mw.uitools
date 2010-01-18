@@ -33,12 +33,13 @@ void CCdlTkWriteCommonDefs::ExportCommonDefs(const CCdlTkInterface& aCdl, const 
 	CCdlTkWriteCommonDefs commonDefs(aCdl, out, aFileName);
 	commonDefs.ProcessHRH(out);
 	out.close();
-	CdlTkUtil::ExportFileIfWritable(tempFile, CdlTkUtil::ToLower(aFileName+"rh"));
+	CdlTkUtil::ExportFileIfWritable(tempFile, aFileName+"rh");
 
 	CdlTkUtil::OpenTempOutput(out, tempFile);
 	commonDefs.Process();
 	out.close();
-	CdlTkUtil::ExportFileIfWritable(tempFile, CdlTkUtil::ToLower(aFileName));
+
+	CdlTkUtil::ExportFileIfWritable(tempFile, aFileName);
 	}
 
 CCdlTkWriteCommonDefs::CCdlTkWriteCommonDefs(const CCdlTkInterface& aCdl, ofstream& aStream, const string& aFileName)
@@ -51,7 +52,7 @@ const string KCommonDefsHeader = "\
 * Copyright (c) 2009 Nokia Corporation and/or its subsidiary(-ies).\n\
 * All rights reserved.\n\
 * This component and the accompanying materials are made available\n\
-* under the terms of  \"Eclipse Public License v1.0\"\n\
+* under the terms of \"Eclipse Public License v1.0\"\n\
 * which accompanies this distribution, and is available\n\
 * at the URL \"http://www.eclipse.org/legal/epl-v10.html\".\n\
 *\n\
@@ -76,7 +77,6 @@ void CCdlTkWriteCommonDefs::ProcessHRH(ofstream& aStream)
 	{
 	iStream = &aStream;
 	string fileName = iFileName + "rh";
-
 	string cdlFileName(CdlTkUtil::ToLower(iCdl.FileName()));
 //	Stream() << CdlTkUtil::Replace("$FILE", cdlFileName, KCommonDefsHeader);
 	Stream() << KCommonDefsHeader;
@@ -87,6 +87,7 @@ void CCdlTkWriteCommonDefs::ProcessHRH(ofstream& aStream)
 	headerSet.Add("$NAME", header.Name());
 	headerSet.Add("$UID", CdlTkUtil::IntToHexString(header.Uid()));
 	headerSet.Add("$NSPACE", iCdl.NamespaceName());
+
 	Stream() << CdlTkUtil::MultiReplace(headerSet, KHrhContents);
 
 	WriteHeaderGuardEnd(fileName, Stream());
@@ -141,6 +142,7 @@ void CCdlTkWriteCommonDefs::Process()
 	CdlTkUtil::CReplaceSet headerSet;
 	headerSet.Add("$NAME", header.Name());
 	headerSet.Add("$NSPACE", iCdl.NamespaceName());
+
 	headerSet.Add("$THISFILE", CdlTkUtil::ToLower(CdlTkUtil::StripPath(iFileName)));
 	headerSet.Add("$MAJOR", CdlTkUtil::IntToString(header.Version().Major()));
 	headerSet.Add("$MINOR", CdlTkUtil::IntToString(header.Version().Minor()));

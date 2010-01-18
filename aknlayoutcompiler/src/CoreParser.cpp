@@ -175,7 +175,7 @@ ParseResult Parser::Parse(const std::string& aString) const
 			{
 			Step& step = stack[i];
 			Step& parent = stack[step.iParent];
-			parent.iResult.iChildren.push_front(step.iResult);
+			parent.iResult.iChildren.insert(0,step.iResult);//push_front
 			if (parent.iResult.iEnd < step.iResult.iEnd)
 				parent.iResult.iEnd = step.iResult.iEnd;
 			}
@@ -196,7 +196,7 @@ Parser::TMatchRes Parser::ParseStep(int aStepId, const std::string& aString, int
 		case EExact:
 			{
 			string match(iMatch);
-			int mLen = match.size();
+			unsigned int mLen = match.size();
 			if (mLen + aPos > aString.size())
 				return EFail;
 			else if (aString.substr(aPos, mLen) != match)
@@ -208,7 +208,7 @@ Parser::TMatchRes Parser::ParseStep(int aStepId, const std::string& aString, int
 
 		case EEos:
 			{
-			if (aPos != aString.size())
+			if (static_cast<unsigned int>( aPos ) != aString.size())
 				return EFail;
 			else
 				step.iResult.iEnd = aPos;
@@ -319,7 +319,7 @@ void DoPrint(const ParseResult& res)
 	if (res.iChildren.size())
 		{
 		cout << "{ ";
-		for (int i=0; i<res.iChildren.size(); i++)
+		for (unsigned int i=0; i<res.iChildren.size(); i++)
 			DoPrint(res.iChildren[i]);
 		cout << "} ";
 		}

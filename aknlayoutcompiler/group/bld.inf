@@ -19,7 +19,7 @@
 #include <platform_paths.hrh>
 
 PRJ_PLATFORMS
-TOOLS CWTOOLS
+TOOLS CWTOOLS TOOLS2
 
 PRJ_EXPORTS
 
@@ -27,7 +27,7 @@ PRJ_EXPORTS
 
 PRJ_MMPFILES
 
-#if	defined(TOOLS) || defined(CWTOOLS)
+#if	defined(TOOLS2) || defined(TOOLS) || defined(CWTOOLS)
 
 /*
  * NOTICE! AknLayoutCompiler is not compiled any more during usual build.

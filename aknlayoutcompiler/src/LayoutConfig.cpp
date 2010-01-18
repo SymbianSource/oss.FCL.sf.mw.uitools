@@ -24,7 +24,7 @@
 
 using namespace std;
 
-const string KBuildConfigFile("\\epoc32\\include\\oem\\bldvariant.hrh");
+const string KBuildConfigFile("/epoc32/include/oem/bldvariant.hrh");
 const string KLayoutMacroStart("__LAYOUT");
 
 typedef LayoutProcessArgsErr<LayoutConfig> LayoutConfigArgsErr;

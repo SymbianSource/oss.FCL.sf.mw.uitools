@@ -23,7 +23,7 @@
 // disable "decorated name length exceeded, name was truncated"
 #pragma warning (disable:4503)
 
-#include <cdlcompilertoolkit/cdltkprocess.h>
+#include <CdlCompilerToolkit/CdlTkProcess.h>
 #include <fstream>
 #include <iostream>
 #include <algorithm>
@@ -111,10 +111,10 @@ void MLCompDataToLayPerf::ShowHelp(ostream& stream)
 
 MLCompDataToLayPerf::MLCompDataToLayPerf(const string& aCdlName, CCdlTkInterface& aInterface, TMLCompData& aSourceLayout, const string& aDestLayoutName)
     :	
-	iCdlName(aCdlName),
-	iInterface(aInterface), 
 	iLayout(aSourceLayout),
-	iDestLayoutName(aDestLayoutName)
+	iDestLayoutName(aDestLayoutName),
+	iCdlName(aCdlName),
+	iInterface(aInterface)
 	{
 	}
 

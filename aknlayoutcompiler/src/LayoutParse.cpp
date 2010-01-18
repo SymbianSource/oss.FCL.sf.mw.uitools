@@ -246,11 +246,11 @@ auto_ptr<TLayParseLayout> TLayParseLayout::Parse(const string& aLayName)
 		}
 	layout->iName = layName;
 
-	int pos=0;
+	string::size_type pos=0;
 	bool first = true;
 	while (pos != string::npos)
 		{
-		int next = layName.find('+', pos);
+		string::size_type next = layName.find('+', pos);
 		string name;
 		if (next == string::npos)
 			{

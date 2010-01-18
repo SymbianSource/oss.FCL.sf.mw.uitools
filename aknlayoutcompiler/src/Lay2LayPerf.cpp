@@ -23,7 +23,7 @@
 #include "Lay2LayPerf.h"
 #include "LayoutParse.h"
 #include "LayoutCompilerErr.h"
-#include <cdlcompilertoolkit/cdltkprocess.h>
+#include <CdlCompilerToolkit/CdlTkProcess.h>
 #include <fstream>
 #include <iostream>
 #include <algorithm>
@@ -64,10 +64,10 @@ void LayoutToLayPerf::ShowHelp(ostream& stream)
 
 
 LayoutToLayPerf::LayoutToLayPerf(const string& aCdlName, TLayout& aSourceLayout, const string& aDestLayoutName)
-:	
-	iCdlName(aCdlName),
+	:	
 	iLayout(aSourceLayout),
-	iDestLayoutName(aDestLayoutName)
+	iDestLayoutName(aDestLayoutName),
+	iCdlName(aCdlName)
 	{
 	}
 

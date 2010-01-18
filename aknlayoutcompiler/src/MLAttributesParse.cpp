@@ -25,7 +25,7 @@
 #include "MLAttributesParse.h"
 #include "MLCompDataParse.h" // for converting zoom strings
 
-#include <akndef.hrh> // for logical font ids
+#include <AknDef.hrh> // for logical font ids
 
 #include <sstream>
 #include <fstream>
@@ -140,7 +140,7 @@ string TMLAttributeSetParse::Name() const
 auto_ptr<TMLAttributesParse> TMLAttributesParse::Parse(const string& aLayName)
 	{
 	auto_ptr<TMLAttributesParse> layout(new TMLAttributesParse);
-	int pos=0;
+
 	string layName = aLayName;
 
 	if (layName.size() >= 2 && layName.substr(0,2) == "-m")
@@ -210,15 +210,15 @@ TLayoutAttributesSaxParser::TLayoutAttributesSaxParser(MSaxLayoutAttributesHandl
 
 void TLayoutAttributesSaxParser::Parse(const std::string& aFileName)
 	{
-	SAX::basic_InputSource<std::string> is(aFileName);
-	SAX::XMLReader<std::string> parser;
+	Arabica::SAX::InputSource<std::string> is(aFileName);
+	Arabica::SAX::XMLReader<std::string> parser;
 	parser.setContentHandler(*this);
 	parser.setErrorHandler(*this);
 	parser.parse(is);
 	}
 
 void TLayoutAttributesSaxParser::startElement(const std::string& /*namespaceURI*/, const std::string& localName,
-                              const std::string& /*qName*/, const SAX::basic_Attributes<std::string>& atts)
+                              const std::string& /*qName*/, const Arabica::SAX::Attributes<std::string>& atts)
     {
 	MSaxLayoutAttributesHandler* handler = iStack.top();
 	if (!handler)

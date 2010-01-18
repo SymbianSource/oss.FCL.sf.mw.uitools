@@ -125,7 +125,7 @@ void MasterLayoutPackage::ShowHelp(ostream& stream)
 	stream << "    <layout pack name> <width> <height> <layout variant> <content>*" << endl;
 	stream << "  If -z<zoomList> is specified, then instances for zoom factors" << endl;
 	stream << "  (in the form \"n,string\") appearing in the file <zoomList> will be generated, " << endl;
-	stream << "  by replacing the keyword $ZOOM in the package definitions." << endl;
+	stream << "  by replacing the keyword ZOOM in the package definitions." << endl;
 	}
 
 void MasterLayoutPackage_Process(
@@ -137,12 +137,12 @@ void MasterLayoutPackage_Process(
 	vector<string>::const_iterator aEnd, 
 	const string& aZoomName)
 	{
-	CCdlTkCdlFileParser parser(KDirDomainSysHeader+KMasterLayoutPackCdlFile);
+	CCdlTkCdlFileParser parser(CdlTkUtil::CurrentDrive()+KDirDomainSysHeader+KMasterLayoutPackCdlFile);
 	auto_ptr<CCdlTkInterface> iface(parser.LoadAndParse(true));
 	CCdlTkInstance pkg(*iface);
 	pkg.TemplateAllImplementations();
 
-	string zoomName = CdlTkUtil::Replace("$ZOOM", aZoomName, aName);
+	string zoomName = CdlTkUtil::Replace("ZOOM", aZoomName, aName);
 	string zoomIdName = "EAknUiZoom" + aZoomName;
 
 	pkg.SetName(zoomName);
@@ -157,7 +157,7 @@ void MasterLayoutPackage_Process(
 
 	for (; aBegin != aEnd; ++aBegin)
 		{
-		string zoomContent = CdlTkUtil::Replace("$ZOOM", aZoomName, *aBegin);
+		string zoomContent = CdlTkUtil::Replace("ZOOM", aZoomName, *aBegin);
 //		pkg.AddLocalContent(zoomContent);
 		cout << zoomContent << endl;
 		}
@@ -204,7 +204,7 @@ void MasterLayoutIndex::BuildOptionsVectors()
 
 void MasterLayoutIndex::CreateTemplateInstance()
 	{
-	CCdlTkCdlFileParser parser(KDirDomainSysHeader+KMasterLayoutPackCdlFile);
+	CCdlTkCdlFileParser parser(CdlTkUtil::CurrentDrive()+KDirDomainSysHeader+KMasterLayoutPackCdlFile);
 	iIface = parser.LoadAndParse(true);
 	iInst = auto_ptr<CCdlTkInstance>(new CCdlTkInstance(*iIface));
 	iInst->TemplateAllImplementations();
@@ -295,13 +295,13 @@ void MasterLayoutIndex::AddPkg(PackageInfoLine& aLine, const string& aZoom, stri
 	string impl = "&";
 	string extra;
 
-	string pkgName = CdlTkUtil::Replace("$ZOOM", aZoom, aLine[EPackNameArg]);
+	string pkgName = CdlTkUtil::Replace("ZOOM", aZoom, aLine[EPackNameArg]);
 	impl+=pkgName;
 
 	string refs;
-	for (int refPos = EFirstContentArg; refPos < aLine.size(); ++refPos)
+	for (unsigned int refPos = EFirstContentArg; refPos < aLine.size(); ++refPos)
 		{
-		string refName = CdlTkUtil::Replace("$ZOOM", aZoom, aLine[refPos]);
+		string refName = CdlTkUtil::Replace("ZOOM", aZoom, aLine[refPos]);
 		CdlTkUtil::AppendString(refs, CdlTkUtil::Replace("$NAME",refName,"\tLOCAL_CDL_REF($NAME),\n"));
 		}
 

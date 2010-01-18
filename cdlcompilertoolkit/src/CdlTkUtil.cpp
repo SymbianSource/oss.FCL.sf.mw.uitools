@@ -23,7 +23,18 @@
 #include <fstream>
 #include <sstream>
 #include <iomanip>
+#include <cassert>
+
+#include <CdlCompilerToolkit/CdlCompat.h>
+
+#ifdef CDL_W32
 #include <direct.h>
+#else
+#include <unistd.h>
+
+#define _getcwd getcwd
+#endif
+
 using namespace std;
 
 namespace CdlCompilerToolkit {
@@ -113,6 +124,7 @@ void CdlTkFileOpenErr::Show(ostream& stream) const
 // CdlTkUtil
 //
 
+#ifdef CDL_W32
 string CdlTkUtil::CurrentDrive()
 	{
 	static string drive = "?:";
@@ -120,6 +132,15 @@ string CdlTkUtil::CurrentDrive()
 		drive[0] = 'A' + _getdrive() - 1;
 	return drive;
 	}
+#else	// Linux
+string CdlTkUtil::CurrentDrive()
+	{
+	char *epocroot = getenv("EPOCROOT");
+	assert(epocroot != NULL);
+	
+	return std::string(epocroot);
+	}
+#endif
 
 string CdlTkUtil::CurrentDir()
 	{
@@ -127,8 +148,13 @@ string CdlTkUtil::CurrentDir()
 	if (dir == "")
 		{
 		char buf[256];
+#ifdef CDL_W32
 		dir = _getcwd(buf, 255) + 2;	// +2 removes drive
-		dir += "\\";
+#else
+//for linux
+                dir = _getcwd(buf, 255);
+#endif
+		dir += PATHSEP;
 		}
 	return dir;
 	}
@@ -146,9 +172,9 @@ void CdlTkUtil::SetOutputPath(const string& aPath)
 	{
 	gOutputPath = aPath;
 	if (gOutputPath.size() == 0)
-		gOutputPath += ".\\";
-	else if (gOutputPath[gOutputPath.size()-1] != '\\')
-		gOutputPath += "\\";	// CDL Tk convention is that paths always end in \ 
+		gOutputPath += PATHSEP;
+	else if (! IsPathSeparator( gOutputPath[gOutputPath.size()-1] ) )
+		gOutputPath += PATHSEP;	// CDL Tk convention is that paths always end in backslash.
 	}
 
 string CdlTkUtil::ToLower(const string& aString)
@@ -170,6 +196,9 @@ string CdlTkUtil::ToUpper(const string& aString)
 string CdlTkUtil::ToCpp(const string& aString)
 	{
 	string r = aString;
+	r = Replace("\r", "", r);
+	r = Replace("\n", "", r);
+
 	for (string::iterator pC = r.begin(); pC != r.end(); ++pC)
 		{
 		if (!CdlTkUtil::IsCpp(*pC))
@@ -182,14 +211,14 @@ string CdlTkUtil::ToCpp(const string& aString)
 
 string CdlTkUtil::StripPath(const string& aPath)
 	{
-	return aPath.substr(aPath.rfind('\\')+1);
+	return aPath.substr( FindLastPathSeparator(aPath) + 1 );
 	}
 
 string CdlTkUtil::ResolvePath(const string& aPath, const string& aFileName)
 	{
 	int size = aFileName.size();
 	// if aFileName is absolute, return it
-	if (size > 0 && aFileName[0] == '\\' || size > 1 && aFileName[1] == ':')
+	if (size > 0 && IsPathSeparator( aFileName[0] ) || size > 1 && aFileName[1] == ':')
 		return aFileName;
 
 	string path = aPath;
@@ -202,11 +231,11 @@ string CdlTkUtil::ResolvePath(const string& aPath, const string& aFileName)
 		if (file.size() > 1 && file[1]=='.' && !path.empty())
 			{
 			path.resize(path.size()-1);			// remove the last slash
-			path.resize(path.rfind('\\')+1);	// remove everything after the next last slash
+			path.resize( FindLastPathSeparator(path) + 1 );	// remove everything after the next last slash
 			}
 
 		// chop the head directory off the file - it has to have a '\' if it has a '.'
-		int fileSlashPos = file.find('\\');
+		string::size_type fileSlashPos = FindFirstPathSeparator( file );
 		if (fileSlashPos == string::npos)
 			throw CdlTkAssert("Illegal filename");
 		file = file.substr(fileSlashPos + 1);
@@ -221,7 +250,7 @@ string CdlTkUtil::CapitalizeFilename(const string& aString)
 	// convert the whole thing to lower case
 	string res = ToLower(aString);
 	// find the first character after the last \ - will be 0 if no \ is present.
-	int filenamePos = res.find_last_of('\\') + 1;
+	string::size_type filenamePos = FindLastPathSeparator(res) + 1;
 	if (filenamePos >= res.size())
 		throw CdlTkAssert(aString + " has no filename");
 	// uppercase the first character
@@ -349,10 +378,19 @@ bool CdlTkUtil::FilesAreIdentical(const std::string& aLeftFileName, const std::s
 void CdlTkUtil::OpenTempOutput(ofstream& aStream, CCdlTkFileCleanup& aFile, ios_base::openmode aOpenMode)
 	{
 	char tmpName[256];
+#ifdef CDL_W32
 	if (!tmpnam(tmpName))
 		{
 		throw CdlTkAssert("Can't create temporary file name");
 		}
+#else
+    strcpy(tmpName, "cdltkutilXXXXXX");
+    
+    if (-1 == mkstemp(tmpName))
+		{
+		throw CdlTkAssert("Can't create temporary file name");
+		}
+#endif
 
 	OpenOutput(aStream, tmpName, aOpenMode);
 	aFile.Set(tmpName);
@@ -363,7 +401,7 @@ void CdlTkUtil::OpenOutput(ofstream& aStream, const string& aFileName, ios_base:
 	aStream.open(aFileName.c_str(), aOpenMode);
 	if (!aStream.is_open())
 		{
-		throw CdlTkFileOpenErr(aFileName);
+		//throw CdlTkFileOpenErr(aFileName);
 		}
 	}
 
@@ -425,7 +463,7 @@ string CdlTkUtil::CharToHexString(char aInt)
 
 void CdlTkUtil::StripLeadingAndTrailingWhitespace(string& aStr)
 	{
-	int pos = aStr.find_first_not_of(KWhiteSpace);
+	string::size_type pos = aStr.find_first_not_of(KWhiteSpace);
 	if (pos == string::npos)
 		{
 		aStr = KEmptyString;
@@ -451,6 +489,38 @@ bool CdlTkUtil::IsCpp(char aChar)
 	return IsAlpha(aChar) || IsNumeric(aChar) || aChar == '_';
 	}
 
+bool CdlTkUtil::IsPathSeparator(char aChar)
+    {
+    return aChar == '/' || aChar == '\\';
+    }
+
+std::string::size_type CdlTkUtil::FindFirstPathSeparator(const std::string& s)
+    {
+    std::string::size_type f = s.find(FORWARDSLASH);
+    std::string::size_type b = s.find(BACKSLASH);
+
+    if(f == std::string::npos)
+        return b;
+    
+    if(b == std::string::npos)
+        return f;
+    
+    return f < b ? f : b;
+    }
+
+std::string::size_type CdlTkUtil::FindLastPathSeparator(const std::string& s)
+    {
+    std::string::size_type f = s.rfind(FORWARDSLASH);
+    std::string::size_type b = s.rfind(BACKSLASH);
+
+    if(f == std::string::npos)
+        return b;
+    
+    if(b == std::string::npos)
+        return f;
+    
+    return f > b ? f : b;
+    }
 void ZeroInts(int* aInts, int aCount)
 	{
 	for (int ii=0; ii<aCount; ii++)
@@ -479,7 +549,7 @@ string CdlTkUtil::MultiReplace(const CReplaceSet& aSet, const string& aIn)
 			if (target[targetMatch] == ch)
 				{
 				++targetMatch;
-				if (targetMatch == target.size())
+				if ( static_cast<string::size_type>( targetMatch ) == target.size())
 					{
 					AppendString(ret, aIn.substr(lastMatch, pos - targetMatch - lastMatch));
 					AppendString(ret, aSet[ii].second);
@@ -501,7 +571,7 @@ string CdlTkUtil::MultiReplace(const CReplaceSet& aSet, const string& aIn)
 
 void CdlTkUtil::AppendString(string& aTarget, const string& aAppend)
 	{
-	int resSize = aTarget.size() + aAppend.size();
+	string::size_type resSize = aTarget.size() + aAppend.size();
 	if (aTarget.capacity() < resSize)
 		aTarget.reserve(resSize*2);
 	aTarget.append(aAppend);
@@ -517,7 +587,8 @@ string CdlTkUtil::CommandLine()
 void CdlTkUtil::SetCommandLine(int argc, char* argv[])
 	{
 	string tool(argv[0]);
-	tool = tool.substr(tool.find_last_of('\\') + 1);
+
+	tool = StripPath( tool );
 	gCommandLine = tool.substr(0, tool.find_last_of('.'));
 	for (int ii=1; ii<argc; ii++)
 		{

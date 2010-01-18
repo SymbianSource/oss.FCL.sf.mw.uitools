@@ -23,7 +23,7 @@
 #include "MLCompDataParse.h"
 #include "MLAttributesParse.h"
 #include "LayoutCompilerErr.h"
-#include <cdlcompilertoolkit/cdltkprocess.h>
+#include <CdlCompilerToolkit/CdlTkProcess.h>
 #include <fstream>
 #include <iostream>
 #include <algorithm>
@@ -39,7 +39,7 @@ typedef LayoutProcessArgsErr<MLCompDataToCdl> MLCompDataToCdlArgsErr;
 const int KGeneratedInterfaceMajorVer = 1;
 const int KGeneratedInterfaceMinorVer = 0;
 
-const string KCompDataFileNameSuffix("compData");
+const string KCompDataFileNameSuffix("compdata");
 const string KAttributesFileNameSuffix("attributes");
 
 
@@ -57,7 +57,7 @@ int MLCompDataToCdl::Process(const vector<string>& args)
 	{
 	iInterfaceNamesUsed.clear();
 
-	int numExpectedArgs = 4;
+	unsigned int numExpectedArgs = 4;
 	if(args.size() < numExpectedArgs)
 		throw MLCompDataToCdlArgsErr();
 
@@ -151,7 +151,7 @@ int MLCompDataToCdl::Process(const vector<string>& args)
     arg = numExpectedArgs-2; 
 
 	// so that we get a list of processed files to output to the comment
-    for(ii = 0; ii < numLayouts; ii++)
+    for(int ii = 0; ii < numLayouts; ii++)
 		comment << args[arg++] << ", ";
     comment << endl; 
 	comment << "// which was generated with timestamp " << mergedLayout->iTimestamp << endl;
@@ -347,7 +347,7 @@ void MLCompDataToCdl::SetHeaders(CCdlTkInterface& aInterface, const string& aCdl
 	aInterface.Header().SetVersion(CCdlTkInterfaceHeader::CVersion(KGeneratedInterfaceMajorVer, KGeneratedInterfaceMinorVer));
 
 	CCdlTkCpp& cpp = aInterface.Cpp();
-	int size = cpp.size();
+//	int size = cpp.size();
 	if(!find(cpp.begin(), cpp.end(), KIncludeLayoutInstanceHeaderScalableDef))
 		cpp.push_back(KIncludeLayoutInstanceHeaderScalableDef);
 	}

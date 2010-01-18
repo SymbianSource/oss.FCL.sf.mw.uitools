@@ -92,7 +92,7 @@ int LayoutAndCdlToCdlInstance::Process(const vector<string>& args)
 	LayoutAndCdlToCdlInstance process(*iface);
 
 	TLayout* base = NULL;
-	for (int arg = 3; arg < args.size(); arg += 2)
+	for (unsigned int arg = 3; arg < args.size(); arg += 2)
 		{
 		string layoutName = args[arg];
 		string instName = args[arg+1];
@@ -369,7 +369,7 @@ void CLayoutToInst::AddSubTableToInstance(const string& aType, TLayoutTable& aTa
 
 	CCdlTkImplementation& imp = FindImp(apiName);
 	const CCdlTkFunctionApi& api = imp.Api().AsFunc();
-	const CCdlTkApiParams& params = api.Params();
+	//const CCdlTkApiParams& params = api.Params();
 
 	TLayoutLine& line = *aTable[aSubTable[0]];
 	CCdlTkImplementation& lineImp = FindImp(LayoutToCdl::LineApiName(line));
@@ -382,7 +382,7 @@ void CLayoutToInst::AddSubTableToInstance(const string& aType, TLayoutTable& aTa
 		ptrType = lineApi.PointerType();
 	
 	int valid = 0;
-	for (int ii=0; ii<aTable.size(); ii++)
+	for (unsigned int ii=0; ii<aTable.size(); ii++)
 		{
 		if (find(aSubTable.begin(), aSubTable.end(), ii) != aSubTable.end())
 			{
@@ -495,7 +495,7 @@ const string KFunctionRect = "\tline.SetAllParentOffsets(" + KParamParentRect + 
 void CLayoutToInst::SetFuncLine(CCdlTkImplementation& aImp, TLayoutLine& aLine, const string& aType, const string aOutputOrder[], int aOutputOrderSize, const string& aPreExtra, const string& aPostExtra)
 	{
 	const CCdlTkFunctionApi& api = aImp.Api().AsFunc();
-	const CCdlTkApiParams& params = api.Params();
+	//const CCdlTkApiParams& params = api.Params();
 
 	string asserts;
 	string tables;

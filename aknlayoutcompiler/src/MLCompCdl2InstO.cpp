@@ -35,7 +35,7 @@
 #include "CodeGenConsts.h"
 #include "UsefulDefinitions.h"
 
-#include <akndef.hrh>
+#include <AknDef.hrh>
 
 #include <fstream>
 #include <algorithm>
@@ -67,7 +67,7 @@ const string KComma = ",";
 const string KTheWordBlank("blank");
 const string KParentRelativeMarker("Pp");
 const string KCellNameJustification("J");
-const string KCompDataFileNameSuffix("compData");
+const string KCompDataFileNameSuffix("compdata");
 const string KAttributesFileNameSuffix("attributes");
 
 // this is the addressable area for each instance, as the lookup table is 16bit
@@ -101,10 +101,11 @@ struct SCompDataImplFunc
 
 	SCompDataImplFunc(TFuncType aType, string aDefn, string aPtrRef, CCdlTkApiParams& aParams)
 		: 
-		iType(aType), 
+		iType(aType),
+		iParams(aParams),
 		iDefn(aDefn), 
-		iPtrRef(aPtrRef),
-		iParams(aParams)
+		iPtrRef(aPtrRef)
+		
 		{
 			
 		}
@@ -122,10 +123,10 @@ struct SCompDataImplFunc
 		{
 		if(iType != aType) 
 			return false;
-		int size = iParams.size();
+		unsigned int size = iParams.size();
 		if(size != aParams.size())
 			return false;
-		for(int ii = 0; ii < size; ii++)
+		for(unsigned int ii = 0; ii < size; ii++)
 			{
 			CCdlTkApiParam& thisParam = iParams[ii];
 			CCdlTkApiParam& otherParam = aParams[ii];
@@ -162,7 +163,7 @@ private:
 *  This is a collection of all SCompDataImplFunc objects that a layout instance needs, initialised
 *  so that there are up to four integer parameters per API type.
 */
-CAllCompDataFuncs gTheFuncs;
+CAllCompDataFuncs gTheCompDataFuncs;
 
 //
 // CAllCompDataFuncs
@@ -210,9 +211,9 @@ CAllCompDataFuncs::CAllCompDataFuncs()
 	for(set< Seq >::iterator pPattern = subPatterns.begin(); pPattern != subPatterns.end(); ++pPattern)
 		{
 		CCdlTkApiParams params;
-		for(Seq::iterator pParam = pPattern->begin(); pParam != pPattern->end(); ++pParam)
+		for(Seq::const_iterator pParam = pPattern->begin(); pParam != pPattern->end(); ++pParam)
 			{
-			int& param = (*pParam);
+			int param = (*pParam);
 			string name = paramNames[param];
 			params.push_back(CCdlTkApiParam(KTypeInt, name));
 			}
@@ -374,8 +375,8 @@ CMLCompDataSubTableInstOptImpl::CMLCompDataSubTableInstOptImpl(
 	TMLCompDataTable::TMLCompDataSubTable* aSubTable, 
 	CCdlTkImplementation* aImpl)
 	:
-	iTable(aTable),
 	CMLCompDataInstOptImpl(aImpl),
+	iTable(aTable),
 	iSubTable(aSubTable)
 	{
 	}
@@ -481,9 +482,9 @@ CMLCompDataInstOpt::CMLCompDataInstOpt(MLCompDataCdlInstanceOpt& aInstances, TML
 	iInstances(aInstances), 
 	iLayout(aLayout),
 	iName(aInstName), 
-	iZoomName(aZoomName), 
-	iZoomLevel(aZoomLevel),
+	iZoomName(aZoomName),
 	iInterface(iInstances.Interface()),
+	iZoomLevel(aZoomLevel),
 	iAllParams(aAllParams),
 	iBaseOffset(0)
 	{
@@ -537,7 +538,7 @@ CMLCompDataInstOpt::~CMLCompDataInstOpt()
 	delete iInstance;
 	for (CMLCompDataInstOptImpls::iterator pImpl = iImpls.begin(); pImpl != iImpls.end(); ++pImpl)
 		delete *pImpl;
-	for (pImpl = iTableImpls.begin(); pImpl != iTableImpls.end(); ++pImpl)
+	for (CMLCompDataInstOptImpls::iterator pImpl = iTableImpls.begin(); pImpl != iTableImpls.end(); ++pImpl)
 		delete *pImpl;
 	}
 
@@ -550,7 +551,7 @@ void CMLCompDataInstOpt::Process(const string& aFirstInstName)
 		ProcessLines(**pTab);
 		}
 
-	for (pTab = iLayout->begin(); pTab != iLayout->end(); ++pTab)
+	for (TMLCompData::iterator pTab = iLayout->begin(); pTab != iLayout->end(); ++pTab)
 		{
 		ProcessTables(**pTab);
 		}
@@ -561,7 +562,7 @@ void CMLCompDataInstOpt::Process(const string& aFirstInstName)
 	// with the correct base offset, the definitions can be updated
 	UpdateLineImpls();
 
-	for (pTab = iLayout->begin(); pTab != iLayout->end(); ++pTab)
+	for (TMLCompData::iterator pTab = iLayout->begin(); pTab != iLayout->end(); ++pTab)
 		{
 		// now that the rest of the data is stable, we can add the tables at the end
 		UpdateTables(**pTab);
@@ -709,7 +710,7 @@ void CMLCompDataInstOpt::UpdateLineImplDefn(CMLCompDataInstOptImpl& aImpl)
 	if(!CheckByteCodeIndexInRange(aImpl.iByteCodeIndex))
 		throw GeneralErr(aImpl.iName + " in interface " + iInterface.FileName());
 	// the base offset has been updated, so all definitions must be refreshed
-	int adjustedIndex = aImpl.iByteCodeIndex - iBaseOffset;
+	//int adjustedIndex = aImpl.iByteCodeIndex - iBaseOffset;
 	aImpl.iImpl->SetDefinition(DefinitionString(aImpl.iByteCodeIndex, aImpl.iName));
 	UpdateParamLimits(aImpl.iName); 
 	}
@@ -860,7 +861,7 @@ void CMLCompDataInstOpt::OptimizeNewLineData(
 	// calculate the number of values
 	bool needsHeader = line.NeedsOptions() || line.NeedsCols() || line.NeedsRows();
 	unsigned int nextCellFlag = 1;	// bit flag for the next cell, note it can get bigger than a char
-	for (cell = 0; cell < aOutputOrder.size(); cell++)
+	for (unsigned int cell = 0; cell < aOutputOrder.size(); cell++)
 		{
 		string cellName = aOutputOrder[cell];
 		TMLCompDataValues::TCompDataCellType type = TMLCompDataValues::Type(cellName);
@@ -910,9 +911,9 @@ void CMLCompDataInstOpt::OptimizeNewLineCellData(
 
 	bool optimizeVarieties = true;
 	bool optimizeCalcs = true;
-	int numCalcs = 0;
+	unsigned int numCalcs = 0;
 	int* largestParamLimitPtr = max_element(aParamLimitVarieties.begin(), aParamLimitVarieties.end());
-	int largestParamLimit = largestParamLimitPtr != aParamLimitVarieties.end() ? *largestParamLimitPtr : 0;
+	unsigned int largestParamLimit = largestParamLimitPtr != aParamLimitVarieties.end() ? *largestParamLimitPtr : 0;
 	
 	// in the case of there being no calcs at all, we don't want to be optimizing,
 	// in order to avoid wasted flags.
@@ -932,7 +933,7 @@ void CMLCompDataInstOpt::OptimizeNewLineCellData(
 		numCalcs = calcs->size();
 		string value;
 		vector<string> foundCalcs; 
-		int paramLimit = aParamLimitVarieties[varietyIndex];
+		unsigned int paramLimit = aParamLimitVarieties[varietyIndex];
 		if(numCalcs == 0)
 			{
 			if(varietyIndex == 0)
@@ -943,7 +944,7 @@ void CMLCompDataInstOpt::OptimizeNewLineCellData(
 			}
 		else
 			{
-			for(int index = 0; index < numCalcs; index++)
+			for(unsigned int index = 0; index < numCalcs; index++)
 				{
 				bool needToCheckIndexValidity = !isColRow || (index < paramLimit);
 				value = (*calcs)[index];
@@ -994,7 +995,7 @@ void CMLCompDataInstOpt::OptimizeNewLineCellData(
 		// but if we're optimizing the calcs, then we don't want to expand them after all
 		if(!optimizeCalcs)
 			{
-			int optimal = optimizedValues.size();
+			unsigned int optimal = optimizedValues.size();
 			string value = optimal > 0 ? optimizedValues[optimal-1] : string();
 			for(; optimal < largestParamLimit; optimal++)
 				{
@@ -1195,10 +1196,10 @@ SCompDataImplFunc& CMLCompDataInstOpt::AddImplFunc(SCompDataImplFunc::TFuncType 
 			return func;
 		}
 
-	int count = gTheFuncs.size();
+	int count = gTheCompDataFuncs.size();
 	for (int ii=0; ii<count; ii++)
 		{
-		SCompDataImplFunc* func = &gTheFuncs[ii];
+		SCompDataImplFunc* func = &gTheCompDataFuncs[ii];
 		if(func->IsSimilar(aType, aParams)) 
 			{
 			iFuncs.push_back(func);
@@ -1207,7 +1208,7 @@ SCompDataImplFunc& CMLCompDataInstOpt::AddImplFunc(SCompDataImplFunc::TFuncType 
 		}
 
 	throw NotFoundErr("implementation function");
-	return gTheFuncs[0];
+	return gTheCompDataFuncs[0];
 	}
 
 void CMLCompDataInstOpt::SetGenericAPI(SCompDataImplFunc::TFuncType aType, const string& aName)
@@ -1411,13 +1412,17 @@ void CMLCompDataInstOpt::AddTableImpl(const string& aApiName, TMLCompDataTable& 
 	nParams--;	// don't count the aLineIndex param
 	SCompDataImplFunc::TFuncType type = SCompDataImplFunc::EWindowTable;
 	TMLCompDataLine::TComponentType subTableType = aTable[aSub[0]]->iType;
-	switch(subTableType)
+//	switch(subTableType)
+//		{
+//		case TMLCompDataLine::ETextComponent:
+//			{
+//			type = SCompDataImplFunc::ETextTable;
+//			break;
+//			}
+//		}
+	if ( TMLCompDataLine::ETextComponent == subTableType )
 		{
-		case TMLCompDataLine::ETextComponent:
-			{
-			type = SCompDataImplFunc::ETextTable;
-			break;
-			}
+		type = SCompDataImplFunc::ETextTable;
 		}
 	CCdlTkFunctionApi& api = const_cast<CCdlTkFunctionApi&>(impl.Api().AsFunc());
 	CCdlTkApiParams& params = api.Params();
@@ -1427,7 +1432,7 @@ void CMLCompDataInstOpt::AddTableImpl(const string& aApiName, TMLCompDataTable& 
 		iAllParams || aSub.iNeedsOption, 
 		iAllParams || aSub.iNeedsCol, 
 		iAllParams || aSub.iNeedsRow);
-	SCompDataImplFunc& func = AddImplFunc(type, params);
+	AddImplFunc(type, params);
 	}
 
 void CMLCompDataInstOpt::AddParamLimits(TMLCompDataLine& aLine, bool aNeedsOptions)
@@ -1519,7 +1524,7 @@ extern void TranslateValue(string& aValue);
 
 void CMLCompDataInstOpt::EncodeValue(vector<char>& aBytes, string aValue)
 	{
-	int pos = 0;
+	string::size_type pos = 0;
 	TranslateValue(aValue);
 	if (aValue == "")
 		{
@@ -1610,7 +1615,7 @@ MLCompDataCdlInstanceOpt::InstList::~InstList()
 
 void MLCompDataCdlInstanceOpt::ProcessSeparators(vector<string>& args, vector<int>& aSeparators)
 	{
-    for(int arg = 3; arg < args.size(); arg++)
+    for(unsigned int arg = 3; arg < args.size(); arg++)
         {
         if(args[arg] == "-a")
             aSeparators.push_back(arg);
@@ -1623,7 +1628,7 @@ void MLCompDataCdlInstanceOpt::ProcessSeparators(vector<string>& args, vector<in
     // check that the distance between each separator is not a multiple of 2 
     // i.e. counting the steps between aSeparators ( sep -> xml -> inst -> sep) is 3 steps
     // i.e. counting the steps between aSeparators ( sep -> xml -> inst -> xml -> inst -> sep) is 5 steps
-    for(int sep = 0; sep < aSeparators.size() - 1; sep++)
+    for(unsigned int sep = 0; sep < aSeparators.size() - 1; sep++)
         {
         int delta = aSeparators[sep+1] - aSeparators[sep]; 
 	    if (delta%2 == 0)
@@ -1659,11 +1664,9 @@ void MLCompDataCdlInstanceOpt::ParseInstances(const vector<string>& aArgs, const
 		string layoutName = aArgs[arg];
 		string instName = aArgs[arg+1];
 		string attribsName = CdlTkUtil::Replace(KCompDataFileNameSuffix, KAttributesFileNameSuffix, layoutName);
-
 		auto_ptr<TMLCompDataParseLayout> layoutParse = TMLCompDataParseLayout::Parse(layoutName);
 		auto_ptr<TMLCompData> layout(layoutParse.get());
 		layoutParse.release();
-
 		auto_ptr<TMLAttributesParse> attribsParse = TMLAttributesParse::Parse(attribsName);
 		auto_ptr<TMLAttributes> attribs(attribsParse.get());
 		attribsParse.release();
@@ -1682,10 +1685,11 @@ void MLCompDataCdlInstanceOpt::MergeLayouts(CInstanceList& aInstUsedList, CZoomL
 		{
 		bool isMirrored = (count != 0);
 		// first iterate through the layouts, we will generate one instance per layout
-		for(int instIndex = 0; instIndex < aInstances.size(); instIndex++)
+		for(unsigned int instIndex = 0; instIndex < aInstances.size(); instIndex++)
 			{
 			const InstStruct& instStruct = aInstances[instIndex];
-			string targetInstName = instStruct.iInstName;
+			string targetInstName = CdlTkUtil::Replace("\r","",instStruct.iInstName);
+			targetInstName = CdlTkUtil::Replace("\n","",targetInstName);
 			TMLCompData& targetLayout = *(instStruct.iInst);
 			TMLAttributes& targetAttribs = *(instStruct.iAttribs);
 
@@ -1764,7 +1768,7 @@ int MLCompDataCdlInstanceOpt::Process(vector<string>& args)
 		throw MLCompDataCdlInstanceOptArgsErr();
 
 	// check for optional flags
-    int arg = 2;
+    	int arg = 2;
 	bool allParams = false;
 	if (args[arg] == "-allparams")
 		{
@@ -1791,7 +1795,7 @@ int MLCompDataCdlInstanceOpt::Process(vector<string>& args)
     // the separators divide the layout instances that are aggregated together
     vector<int> separators;
 	ProcessSeparators(args, separators);
-    for(int sep = 0; sep < separators.size() - 1; sep++)
+    for(unsigned int sep = 0; sep < separators.size() - 1; sep++)
         {
 		if(!CheckForUsedInstances(instUsedList, zoomLevelNames, args, separators, sep))
 			continue;
@@ -1807,7 +1811,6 @@ int MLCompDataCdlInstanceOpt::Process(vector<string>& args)
 			pMergedLayout = mergedLayouts.erase(pMergedLayout);
 			}
         }
-
 	process.Process();
 	process.WriteInstances();
 	return 0;
@@ -1878,7 +1881,6 @@ void MLCompDataCdlInstanceOpt::Process()
 			continue;
 		CMLCompDataInstOpt* firstInstOpt = compDatas[0];
 		cout << "processing instances for zoom level: " << firstInstOpt->ZoomName() << endl;
-
 		string firstInstName = firstInstOpt->Name();
 		for (CCompDatas::iterator pLayout = compDatas.begin(); pLayout != compDatas.end(); ++pLayout)
 			(*pLayout)->Process(firstInstName);
@@ -1887,8 +1889,7 @@ void MLCompDataCdlInstanceOpt::Process()
 	}
 
 void MLCompDataCdlInstanceOpt::WriteInstances()
-	{
-	bool found = false;
+	{	bool found = false;
 	for(CCompDataZoomLevelDatas::iterator pZoomLevel = iZoomLevelDatas.begin(); pZoomLevel != iZoomLevelDatas.end(); ++pZoomLevel)
 		{
 		CCompDatas& compDatas = pZoomLevel->second;

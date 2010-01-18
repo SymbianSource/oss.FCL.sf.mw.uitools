@@ -14,11 +14,18 @@
 * Description:
 *
 */
-#include "CdlCompilerToolkit/CdlTkProcess.h"
+#include <CdlCompilerToolkit/CdlTkProcess.h>
+#include <CdlCompilerToolkit/CdlCompat.h>
 #include "CdlTkPriv.h"
 #include <fstream>
 #include <iomanip>
+
+#ifdef CDL_W32
 #include <direct.h>
+#else
+#include <unistd.h>
+#define _getcwd getcwd
+#endif
 #include <iostream>
 using namespace std;
 

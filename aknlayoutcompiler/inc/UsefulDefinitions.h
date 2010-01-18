@@ -22,5 +22,4 @@
 #define ARRAY_LEN(x) (sizeof(x)/sizeof(*(x)))
 #define ARRAY_END(x) (x+(sizeof(x)/sizeof(*(x))))
 
-
 #endif // USEFULDEFINITIONS_H

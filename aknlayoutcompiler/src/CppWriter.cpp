@@ -18,11 +18,11 @@
 
 
 #include "CppWriter.h"
-#include "layoutcompilererr.h"
+#include "LayoutCompilerErr.h"
 #include "CodeGenConsts.h"
 #include "UsefulDefinitions.h"
 
-#include <cdlcompilertoolkit/cdltkutil.h>
+#include <CdlCompilerToolkit/CdlTkUtil.h>
 
 #include <fstream>
 #include <algorithm>
@@ -614,7 +614,7 @@ void TCppWriter::Write(const std::string& aLayName)
 	BuildLayoutLineTable();
 	CCdlTkFileCleanup temp(iName+".lag");
 	Output(iName+".cpp", iName+".lag", lay);
-	CdlTkUtil::ExportFile(temp, KDirEpocSysHeader+iShortName+".lag");
+	CdlTkUtil::ExportFile(temp, CdlTkUtil::CurrentDrive()+KDirEpocSysHeader+iShortName+".lag");
 	}
 
 void TCppWriter::Output(const string& aCpp, const string& aLag, const string& aLayName)

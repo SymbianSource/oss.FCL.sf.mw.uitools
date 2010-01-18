@@ -22,6 +22,7 @@
 #include <sstream>
 #include <set>
 #include <algorithm>
+#include <memory>
 using namespace std;
 
 
@@ -33,7 +34,7 @@ const string KUnknown("unknown");
 
 string TrimWhiteSpace(const string& aString)
 	{
-	int start = aString.find_first_not_of(WhiteSpace);
+	string::size_type start = aString.find_first_not_of(WhiteSpace);
 	if (start == string::npos)
 		return "";
 	else
@@ -95,7 +96,7 @@ set<string> gKnownTitles;
 void THtmlParseLayoutTable::ExtractTitle(const string& aText)
 	{
 	iName = UnHtml(aText);
-	int pos = iName.find_first_not_of("1234567890.\t\r\n ");
+	string::size_type pos = iName.find_first_not_of("1234567890.\t\r\n ");
 	if (pos == string::npos)
 		return;
 	iName = iName.substr(pos);
@@ -209,7 +210,7 @@ void THtmlParseLayoutTable::PutBack(const string& aText)
 
 int THtmlParseLayoutTable::GetVal(const string& aText, const string& aField)
 	{
-	int pos = aText.find(aField+"=");
+	string::size_type pos = aText.find(aField+"=");
 	if (pos == string::npos)
 		return 0;
 	string val = aText.substr(pos + aField.length() + 1);
@@ -252,7 +253,7 @@ string THtmlParseLayoutTable::CleanMultiCell(const string& aText)
 	if (aText.length()==0)
 		return aText;
 
-	int pos = aText.find_last_not_of(" ,");
+	string::size_type pos = aText.find_last_not_of(" ,");
 	if (pos == string::npos)
 		return "";
 
@@ -516,7 +517,7 @@ string THtmlParseLayoutTable::SplitMultiCell(const string& aCell, const string& 
 	int lastSpace = -1;
 	int lastNum = -1;
 	
-	for (int i=0; i<cell.length(); i++)
+	for (string::size_type i=0; i<cell.length(); i++)
 		{
 		char c = cell[i];
 		if (c == ',')
@@ -555,13 +556,13 @@ string THtmlParseLayoutTable::StripTo(const string& aText, const string& aValid)
 string THtmlParseLayoutTable::UnHtml(const string& aText)
 	{
 	string str("");
-	for (int i=0; i<aText.size(); i++)
+	for (string::size_type i=0; i<aText.size(); i++)
 		{
 		char c = aText[i];
 		if (c == '&')
 			{
 			string s = aText.substr(i);
-			int pos = s.find(";");
+			string::size_type pos = s.find(";");
 			if (pos != string::npos)
 				{
 				i+=pos;
@@ -588,7 +589,7 @@ const THtmlChar gHtmlChars[] =
 
 char THtmlParseLayoutTable::HtmlChar(const string& aText)
 	{
-	for (int i=0; i<sizeof(gHtmlChars)/sizeof(THtmlChar); i++)
+	for (unsigned int i=0; i<sizeof(gHtmlChars)/sizeof(THtmlChar); i++)
 		{
 		if (aText == gHtmlChars[i].iString)
 			return gHtmlChars[i].iChar;
@@ -634,11 +635,11 @@ SConvertAknName gAknNameConversionTable[] =
 string THtmlParseLayoutTable::ConvertToAknName(const string& aText)
 	{
 	string ret = aText;
-	for (int i=0; i<sizeof(gAknNameConversionTable)/sizeof(SConvertAknName); i++)
+	for (unsigned int i=0; i<sizeof(gAknNameConversionTable)/sizeof(SConvertAknName); i++)
 		{
 		string laf = gAknNameConversionTable[i].iLaf;
 		string akn = gAknNameConversionTable[i].iAkn;
-		int pos;
+		string::size_type pos;
 		while ((pos = ret.find(laf)) != string::npos)
 			{
 			ret.erase(pos, laf.length());

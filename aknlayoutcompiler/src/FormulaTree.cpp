@@ -201,10 +201,10 @@ FormulaTreeNode::FormulaTreeNode(TNodeType aType, const string& aSource, int aSt
 FormulaTreeNode::FormulaTreeNode(const FormulaTreeNode& aOther)
 : iSource(aOther.iSource), iStart(aOther.iStart), iLen(aOther.iLen), iType(aOther.iType)
 	{
-	for (int i=0; i<iSubNodes.size(); i++)
+	for (unsigned int i=0; i<iSubNodes.size(); i++)
 		delete iSubNodes[i];
 	iSubNodes.clear();
-	for (int j=0; j<aOther.iSubNodes.size(); j++)
+	for (unsigned int j=0; j<aOther.iSubNodes.size(); j++)
 		iSubNodes.push_back(new FormulaTreeNode(*aOther.iSubNodes[j]));
 	}
 

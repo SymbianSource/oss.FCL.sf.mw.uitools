@@ -25,7 +25,7 @@
 #include "Layout.h"
 using namespace std;
 
-#include <cdlcompilertoolkit/cdltkinterface.h>
+#include <CdlCompilerToolkit/CdlTkInterface.h>
 using namespace CdlCompilerToolkit;
 
 

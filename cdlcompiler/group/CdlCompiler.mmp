@@ -43,6 +43,8 @@ option MSVC /GX /W3
       win32_library /epoc32/release/tools/rel/CdlCompilerToolkit.lib
     #endif
   END
-#endif   
+#endif  
+
+staticlibrary CdlCompilerToolkit 
 
 // End of File
