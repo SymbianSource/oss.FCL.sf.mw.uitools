@@ -23,7 +23,7 @@ TOOLS CWTOOLS TOOLS2
 
 PRJ_EXPORTS
 
-../binary/AknLayoutCompiler.exe /epoc32/tools/AknLayoutCompiler.exe
+//../binary/AknLayoutCompiler.exe /epoc32/tools/AknLayoutCompiler.exe
 
 PRJ_MMPFILES
 
@@ -37,7 +37,7 @@ PRJ_MMPFILES
  * /epoc32/tools/AknLayoutCompiler.exe to ../binary directory and 
  * put the binary to version control.
  */
-// AknLayoutCompiler.mmp
+ AknLayoutCompiler.mmp
 
 #endif
 
