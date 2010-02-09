@@ -21,7 +21,7 @@ TOOLS CWTOOLS TOOLS2
 
 PRJ_EXPORTS
 
-../binary/CdlCompiler.exe /epoc32/tools/CdlCompiler.exe 
+//../binary/CdlCompiler.exe /epoc32/tools/CdlCompiler.exe 
 
 PRJ_MMPFILES
 
@@ -35,7 +35,7 @@ PRJ_MMPFILES
  * /epoc32/tools/AknLayoutCompiler.exe to ../binary directory and 
  * put the binary to version control.
  */
-// CdlCompiler.mmp
+ CdlCompiler.mmp
 #endif
 
 // End of File
