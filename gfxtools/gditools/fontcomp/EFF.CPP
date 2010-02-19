@@ -16,7 +16,7 @@
 */
 
 
-#include "FONTCOMP.H"
+#include "fontcomp.h"
 
 EffRead::EffRead(fstream& aFile,FontCompiler& aFontCompiler,Fxf* aFxf,short int* aMapSpace):
 	FontRead(aFile,aFontCompiler,aFxf),

@@ -22,6 +22,7 @@ TARGET           fontcomp.exe
 TARGETTYPE       exe
 
 USERINCLUDE   ../inc
+USERINCLUDE   ../fontcomp
 USERINCLUDE ../../../inc
 USERINCLUDE ../../inc
 

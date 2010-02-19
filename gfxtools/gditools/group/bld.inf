@@ -25,18 +25,22 @@
 
 PRJ_PLATFORMS
 
-TOOLS
+TOOLS TOOLS2
 
 
 PRJ_EXPORTS
 
 ../group/fontcomp.ipr    /epoc32/engdoc/tools/fontcomp.ipr
 
+// IBY-files
+../rom/gdi.iby	CORE_IBY_EXPORT_PATH(tools,gdi.iby)
+
+
 PRJ_MMPFILES
 
-#ifdef TOOLS
+#if (defined TOOLS ) || (defined TOOLS2)
 
-../group/FONTCOMP.MMP
+../group/fontcomp.mmp
 
 // NOTICE! Bmconv is moved to /s60/tools/platformtools/gfxtools/bmconv/group
 

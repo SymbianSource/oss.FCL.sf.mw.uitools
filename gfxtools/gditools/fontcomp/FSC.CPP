@@ -16,7 +16,7 @@
 */
 
 
-#include "FONTCOMP.H"
+#include "fontcomp.h"
 
 FscRead::FscRead(fstream& aFile,FontCompiler& aFontCompiler,Fxf* aFxf):
 	FontRead(aFile,aFontCompiler,aFxf)
