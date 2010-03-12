@@ -1,32 +1,56 @@
-/*
-* Copyright (c) 2005 Nokia Corporation and/or its subsidiary(-ies).
-* All rights reserved.
-* This component and the accompanying materials are made available
-* under the terms of "Eclipse Public License v1.0"
-* which accompanies this distribution, and is available
-* at the URL "http://www.eclipse.org/legal/epl-v10.html".
-*
-* Initial Contributors:
-* Nokia Corporation - initial contribution.
-*
-* Contributors:
-*
-* Description:
-*
-*/
-
+#include <platform_paths.hrh>
 
 PRJ_PLATFORMS
-
-TOOLS
+//#ifdef SBSV2
+   TOOLS2
+//#else
+   TOOLS
+//#endif
 
 PRJ_EXPORTS
-../lib/SVGTBinEncode.exe	/epoc32/tools/SVGTBinEncode.exe
-../lib/xerces-c_2_6.dll		/epoc32/tools/xerces-c_2_6.dll
+
+//#ifndef SBSV2
+	//START TOOLS
+		//#if defined(TOOLS) 
+				../binary/svgtbinencode.exe	/epoc32/tools/svgtbinencode.exe
+				// For Windows abld Support "Link with dynamic xerces-c.2.8.0"
+				//../lib_win/xerces-c_2.lib /epoc32/release/tools/rel/xerces-c_2.lib
+				//../lib_win/xerces-c_2.lib /epoc32/release/tools/deb/xerces-c_2.lib
+		//#endif
+	//END
+//#endif  
+
+#if HOSTPLATFORM_DIR==win32
+	#if defined(SBSV2) && defined(TOOLS2) 
+		// For Windows Raptor Support "Link with static xerces-c.2.8.0 mingw"
+		../lib_win/libxercesenc-c.a ../release/tools2/rel/libxercesenc-c.a
+		../lib_win/libxercesenc-c.a ../release/tools2/deb/libxercesenc-c.a
+	#endif
+#endif
+
+#if HOSTPLATFORM_DIR!=win32
+	#if defined(SBSV2) && defined(TOOLS2) 
+		// For Linux Raptor Support "Link with static xerces-c.2.8.0 mingw"
+		../lib_linux/libxercesenc-c.a ../release/tools2/linux-i386/rel/libxercesenc-c.a
+		../lib_linux/libxercesenc-c.a ../release/tools2/linux-i386/deb/libxercesenc-c.a
+	#endif
+#endif
+
+
 PRJ_MMPFILES
 
-// Copy the SVGT Encoder Binary to target dir
-//gnumakefile copysvgtbinencode.mk
+#if defined(SBSV2) && defined(TOOLS2) 
+		
+		/*
+		 * NOTICE! svgtbinencode is not compiled any more during usual build.
+		 * It is just exported from ../binary directory.
+		 * If you really want compile svgtbinencode from sources you need to 
+		 * uncomment below line, build this project using "sbs -c tools2 - b bld.inf" and copy 
+		 * /epoc32/tools/svgtbinencode.exe to ../binary directory and 
+		 * put the binary to version control.
+		*/
+		 
+//	svgtbinencoder.mmp
 
-// Enable Below Extension Makefile to compile and copy encoder to target dir
-//gnumakefile makefile
+#endif
+

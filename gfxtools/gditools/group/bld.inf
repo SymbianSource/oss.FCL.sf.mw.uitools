@@ -32,10 +32,6 @@ PRJ_EXPORTS
 
 ../group/fontcomp.ipr    /epoc32/engdoc/tools/fontcomp.ipr
 
-// IBY-files
-../rom/gdi.iby	CORE_IBY_EXPORT_PATH(tools,gdi.iby)
-
-
 PRJ_MMPFILES
 
 #if (defined TOOLS ) || (defined TOOLS2)
