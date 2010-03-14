@@ -16,8 +16,10 @@
 */
 
 
-#include "GDSFCOMP.H"
-#include "TOOLSVER.H"
+#include "gdsfcomp.h"
+#include "toolsver.h"
+
+#include <sstream>
 
 int GdsFontCompiler::WriteFont()
 	{
@@ -155,7 +157,7 @@ void GdsFontCompiler::WriteBlankLines(int num,int width)
 		WriteFormattedData(buf,1);
 	}
 
-void GdsFontCompiler::WriteFormattedData(char* aData,int aNewLine)
+void GdsFontCompiler::WriteFormattedData(const char* aData,int aNewLine)
 	{
 	if(aData)
 		iOutputFile << aData;
@@ -165,9 +167,11 @@ void GdsFontCompiler::WriteFormattedData(char* aData,int aNewLine)
 
 void GdsFontCompiler::WriteFormattedData(int aNum,int aNewLine)
 	{
-	char numbuf[16];
-	_itoa(aNum,numbuf,10);
-	WriteFormattedData(numbuf,aNewLine);
+    std::stringstream ss;
+
+    ss << aNum;
+
+	WriteFormattedData(ss.str().c_str(), aNewLine);
 	}
 
 void GdsFontCompiler::WriteNewLine()

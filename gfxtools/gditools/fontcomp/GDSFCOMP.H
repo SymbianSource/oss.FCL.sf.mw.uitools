@@ -19,7 +19,7 @@
 #if !defined(__GDSFCOMP_H__)
 #define __GDSFCOMP_H__
 #if !defined(__FONTCOMP_H__)
-#include "FONTCOMP.H"
+#include "fontcomp.h"
 #endif
 /**
 @internalComponent
@@ -39,7 +39,7 @@ protected:
 	void WriteFooter();
 	void WriteCharData(int);
 	void WriteBlankLines(int,int);
-	void WriteFormattedData(char*,int=0);
+	void WriteFormattedData(const char*,int=0);
 	void WriteFormattedData(int,int=0);
 	void WriteNewLine();
 	};

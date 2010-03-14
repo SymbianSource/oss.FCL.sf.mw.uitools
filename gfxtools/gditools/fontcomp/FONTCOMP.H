@@ -20,7 +20,7 @@
 #define __FONTCOMP_H__
 #include <stdlib.h>
 #include <string.h>
-#include <io.h>
+#include <stdio.h>
 
 #ifdef __MSVCDOTNET__
 #include <fstream>

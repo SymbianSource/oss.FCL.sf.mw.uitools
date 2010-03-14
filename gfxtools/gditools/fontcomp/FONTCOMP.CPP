@@ -15,8 +15,7 @@
 *
 */
 
-
-#include "FONTCOMP.H"
+#include "fontcomp.h"
 
 FontCompiler::FontCompiler():
 	iInputFile(),
@@ -40,7 +39,7 @@ int FontCompiler::Init(char* infile,char* outfile,char* mapfile)
 #ifdef __MSVCDOTNET__
 		fstream tempfile(mapfile, ios::in | ios::binary);
 #else //!__MSVCDOTNET__
-		fstream tempfile(mapfile, ios::in | ios::binary | ios::nocreate);
+		fstream tempfile(mapfile, ios::in | ios::binary);
 #endif //__MSVCDOTNET__
 
 		if(!tempfile.is_open())
@@ -53,7 +52,7 @@ int FontCompiler::Init(char* infile,char* outfile,char* mapfile)
 #ifdef __MSVCDOTNET__
 	iInputFile.open(infile, ios::in | ios::binary);
 #else //!__MSVCDOTNET__
-	iInputFile.open(infile, ios::in | ios::binary | ios::nocreate);
+	iInputFile.open(infile, ios::in | ios::binary);
 #endif //__MSVCDOTNET__
 
 	if(!(iOutputFile.is_open() && iInputFile.is_open()))
@@ -150,7 +149,7 @@ void FontCompiler::RemoveBlankSpace()
 			    bit>>=1;
 			    if (bit==0)
 				{
-				bit=unsigned char(0x80);
+				bit= (unsigned char)0x80;
 				pb--;
 				}
 			    }
