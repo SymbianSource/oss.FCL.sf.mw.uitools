@@ -38,7 +38,7 @@ FREEZE : do_nothing
 
 SAVESPACE : do_nothing
 
-RELEASABLES : ;
+RELEASABLES :
 
 FINAL : do_nothing
 
