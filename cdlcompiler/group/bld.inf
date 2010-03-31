@@ -21,7 +21,7 @@ TOOLS CWTOOLS TOOLS2
 
 PRJ_EXPORTS
 
-../binary/CdlCompiler.EXE /epoc32/tools/CdlCompiler.EXE 
+../binary/CdlCompiler.exe /epoc32/tools/CdlCompiler.exe 
 
 PRJ_MMPFILES
 

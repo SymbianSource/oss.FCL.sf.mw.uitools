@@ -48,7 +48,7 @@ TInt TDictEntry::Use()
 	}
 
 
-void TDictEntry::CreateEmbeddedDict(TInt aDictIndex,CDictArray* aDict)
+void TDictEntry::CreateEmbeddedDictL(TInt aDictIndex,CDictArray* aDict)
 	{
 	// Create list of embedded dictionary strings
 	iEmbedded = new(ELeave)CResEntry(aDict);
