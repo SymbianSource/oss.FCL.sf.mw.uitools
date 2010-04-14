@@ -15,5 +15,4 @@
 *
 */
 
-#include "../gditools/group/bld.inf"
 #include "../Color/group/bld.inf"
