@@ -25,7 +25,7 @@
 
 PRJ_PLATFORMS
 
-TOOLS
+TOOLS TOOLS2
 
 
 PRJ_EXPORTS
@@ -34,9 +34,9 @@ PRJ_EXPORTS
 
 PRJ_MMPFILES
 
-#ifdef TOOLS
+#if (defined TOOLS ) || (defined TOOLS2)
 
-../group/FONTCOMP.MMP
+../group/fontcomp.mmp
 
 // NOTICE! Bmconv is moved to /s60/tools/platformtools/gfxtools/bmconv/group
 

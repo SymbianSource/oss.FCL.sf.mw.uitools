@@ -19,7 +19,7 @@
 # EPOCROOT
 #
 PROGRAM=SVGTBinEncode.exe
-XERCES_DLL=xerces-c_2_6.dll
+XERCES_DLL=xerces-c_2_8.dll
 #SYMDEFCPP_DLL=symdefcppdll.dll
 PARENT_DIR=\sf\mw\uitools\svgtencoder\svgtenc\standalone\group
 
@@ -167,7 +167,7 @@ OBJECTS_CPP_REL=$(SOURCES_CPP:.cpp=.o)
 OBJECTS_C_REL=$(SOURCES_C:.c=.o)
 
 
-STLPORT_INC=C:\PROGRA~1\MICROS~3\VC98\Include\stlport
+#STLPORT_INC=C:\PROGRA~1\MICROS~3\VC98\Include\stlport
 
 INCLUDES=/I"$(PARENT_DIR)" \
 	  /I"$(PARENT_DIR)\inc" \
@@ -177,7 +177,7 @@ INCLUDES=/I"$(PARENT_DIR)" \
 VPATH=$(PARENT_DIR)
 CC=cl.exe
 LINK=link.exe
-LINK32_FLAGS= ..\lib\xerces-c_2.lib
+LINK32_FLAGS= ..\lib_win\xerces-c_2.lib
 DEFINES = /nologo /MT /GX /I "..\Internal\SVGEngine\inc" /I "..\Internal\Gfx2D\inc" /I "..\Internal\Gfx2D\VGRasterizer\inc" /I "..\Internal\Xmldomimpl\inc" /I "..\Internal\SVGImpl\inc\SVGDOM" /I "..\Internal\SVGImpl\inc" /I "..\Internal\Path\inc" /I "..\Internal\xmlReader\inc" /I "..\Internal\Sax2Print" /I "..\Internal\Nvg\inc" /D ARM /D "WIN32" /D "NDEBUG" /D "_CONSOLE" /D "_MBCS" /YX /FD /c
 CLFLAGS = /Od /nologo /GF /W4 /Fd -GX
 
@@ -216,13 +216,13 @@ DEB_install: $(PROGRAM).dbg
 #	echo $(BUILD_DIR)
 #	echo $(CURDIR)
 	copy /y "$(PARENT_DIR)\$(PROGRAM).dbg" "\epoc32\RELEASE\tools\deb\$(PROGRAM)"
-	copy /y "\sf\mw\uitools\svgtencoder\svgtenc\standalone\lib\$(XERCES_DLL)" "\epoc32\RELEASE\tools\deb\$(XERCES_DLL)"
+	copy /y "\sf\mw\uitools\svgtencoder\svgtenc\standalone\lib_win\$(XERCES_DLL)" "\epoc32\RELEASE\tools\deb\$(XERCES_DLL)"
 REL_install: $(PROGRAM).rel
 #	echo $(PARENT_DIR)
 #	echo $(BUILD_DIR)
 #	echo $(CURDIR)
 	copy /y "$(PARENT_DIR)\$(PROGRAM).rel" "\epoc32\tools\$(PROGRAM)"
-	copy /y "\sf\mw\uitools\svgtencoder\svgtenc\standalone\lib\$(XERCES_DLL)" "\epoc32\tools\$(XERCES_DLL)"
+	copy /y "\sf\mw\uitools\svgtencoder\svgtenc\standalone\lib_win\$(XERCES_DLL)" "\epoc32\tools\$(XERCES_DLL)"
 DEB_CLEAN:
 #	echo $(CURDIR)
 	@chdir $(PARENT_DIR) && erase /f $(OBJECTS_CPP_DEB) 2>>nul
