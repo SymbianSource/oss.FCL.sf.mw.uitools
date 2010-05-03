@@ -26,7 +26,7 @@ PRJ_EXPORTS
 PRJ_MMPFILES
 #if defined(TOOLS) || defined(CWTOOLS)
 ../group/Color.mmp
-gnumakefile ../group/convcolor.mk
+/* gnumakefile ../group/convcolor.mk */
 #endif
 
 // End of File
