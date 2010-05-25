@@ -19,14 +19,14 @@
 #include <platform_paths.hrh>
 
 PRJ_PLATFORMS
-CWTOOLS TOOLS
+CWTOOLS TOOLS TOOLS2
 
 PRJ_EXPORTS
 
 PRJ_MMPFILES
-#if defined(TOOLS) || defined(CWTOOLS)
-../group/Color.mmp
-/* gnumakefile ../group/convcolor.mk */
+#if defined(TOOLS) || defined(CWTOOLS) || defined(TOOLS2)
+Color.mmp
+/* gnumakefile convcolor.mk */
 #endif
 
 // End of File
