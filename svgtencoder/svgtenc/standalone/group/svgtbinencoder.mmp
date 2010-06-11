@@ -11,9 +11,10 @@
 *
 * Contributors:
 *
-* Description: 
+* Description:
 *
 */
+
 #include <platform_paths.hrh>
 
 TARGET				svgtbinencode.exe

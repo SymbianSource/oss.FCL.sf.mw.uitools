@@ -11,7 +11,7 @@
 #
 # Contributors:
 #
-# Description: 
+# Description:
 #
 
 PROGRAM=/home/nokia/standalone/group/svgtbinencode.exe
