@@ -1889,7 +1889,7 @@ void MLCompDataCdlInstanceOpt::Process()
 	}
 
 void MLCompDataCdlInstanceOpt::WriteInstances()
-	{	bool found = false;
+	{	bool found = false;
 	for(CCompDataZoomLevelDatas::iterator pZoomLevel = iZoomLevelDatas.begin(); pZoomLevel != iZoomLevelDatas.end(); ++pZoomLevel)
 		{
 		CCompDatas& compDatas = pZoomLevel->second;

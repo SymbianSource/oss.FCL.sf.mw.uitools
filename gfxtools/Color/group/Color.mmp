@@ -51,7 +51,7 @@ source                  Palette10.cpp
 source                  Palette11.cpp
 source                  Palette12.cpp
 source                  Palette13.cpp
-source                  Strings.cpp
-source                  Rgb.cpp
+source                  strings.cpp
+source                  RGB.CPP
 
 // End of File
