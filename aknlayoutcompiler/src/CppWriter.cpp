@@ -703,7 +703,7 @@ void TCppWriter::WriteLagHeader(ostream& aLag)
 	aLag << "*/" << endl  << endl;
 	aLag << "#if !defined(__" << iShortName << "_LAG__)" << endl;
 	aLag << "#define __" << iShortName << "_LAG__" << endl;
-	aLag << "#include <aknlayoutdef.h>" << endl << endl;
+	aLag << "#include <AknLayoutDef.h>" << endl << endl;
 	}
 
 // End of File

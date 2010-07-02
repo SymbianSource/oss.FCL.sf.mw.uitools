@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2009 Nokia Corporation and/or its subsidiary(-ies).
+* Copyright (c) 2009, 2010 Nokia Corporation and/or its subsidiary(-ies).
 * All rights reserved.
 * This component and the accompanying materials are made available
 * under the terms of "Eclipse Public License v1.0"
@@ -87,7 +87,7 @@ void CCdlTkSyntaxCheck::WriteSyntaxCheckCpp(string aName) const
 	CdlTkUtil::OpenOutput(out, aName);
 
 	out << "#line 1 \"" << CdlTkUtil::StripPath(iCdl.FileName()) << "\"" << endl;
-	out << "#include <cdlengine.h>" << endl;
+	out << "#include <CdlEngine.h>" << endl;
 	const CCdlTkCpp& cpp = iCdl.Cpp();
 	for (CCdlTkCpp::const_iterator pCpp = cpp.begin(); pCpp != cpp.end(); ++pCpp)
 		{
