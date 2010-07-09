@@ -30,6 +30,7 @@ PRJ_EXPORTS
 	//START TOOLS
 		//#if defined(TOOLS) 
 				../binary/svgtbinencode.exe	/epoc32/tools/svgtbinencode.exe
+				../binary/xerces-c_2_6.dll	/epoc32/tools/xerces-c_2_6.dll
 				../binary/svgtbinencode	/epoc32/tools/svgtbinencode
 				// For Windows abld Support "Link with dynamic xerces-c.2.8.0"
 				//../lib_win/xerces-c_2.lib /epoc32/release/tools/rel/xerces-c_2.lib
