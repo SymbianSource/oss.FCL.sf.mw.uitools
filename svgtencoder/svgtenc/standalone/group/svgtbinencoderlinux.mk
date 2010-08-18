@@ -1,22 +1,6 @@
-#
-# Copyright (c) 2009 Nokia Corporation and/or its subsidiary(-ies).
-# All rights reserved.
-# This component and the accompanying materials are made available
-# under the terms of "Eclipse Public License v1.0"
-# which accompanies this distribution, and is available
-# at the URL "http://www.eclipse.org/legal/epl-v10.html".
-#
-# Initial Contributors:
-# Nokia Corporation - initial contribution.
-#
-# Contributors:
-#
-# Description:
-#
-
-PROGRAM=/home/nokia/standalone/group/svgtbinencode.exe
-OBJS=/home/nokia/standalone/group
-PARENT_DIR=/home/nokia/standalone/group
+PROGRAM=svgtbinencode
+OBJS=.
+PARENT_DIR=.
 SOURCES_CPP=../Internal/Gfx2D/src/GfxFloatFixPt.cpp \
 ../Internal/Gfx2D/src/Gfxtrignometric.cpp \
 ../Internal/Gfx2D/src/GfxGc/GfxColor.cpp \
@@ -166,9 +150,14 @@ INCLUDES=-I "$(PARENT_DIR)" -I "$(PARENT_DIR)/inc" -I usr/include
 	 # /I"$(STLPORT_INC)"
 
 VPATH=$(PARENT_DIR)
-CC=g++ -g
+
+# Uncomment this, to generate a debug version.
+# debug=-g3
+
+CC=g++ -O2 -m32 $(debug)
+
 LINK=ld
-LINK32_FLAGS=/home/nokia/standalone/lib_linux/libxercesenc-c.so.28
+LINK32_FLAGS=-L../lib_linux -lxercesenc-c
 DEFINES =-I "../Internal/SVGEngine/inc" \
 -I "../Internal/Gfx2D/inc" \
 -I "../Internal/Gfx2D/VGRasterizer/inc" \
@@ -181,12 +170,12 @@ DEFINES =-I "../Internal/SVGEngine/inc" \
 -I "../Internal/Path/inc" -D ARM -D NDEBUG -D _CONSOLE -D _MBCS
 #/YX /FD /c
 #CLFLAGS = /Od /nologo /GF -W4 /Fd -GX
-CLFLAGS =-ansi -umacro -fms-extensions -w -fshort-wchar -g3 
+CLFLAGS =-ansi -umacro -fms-extensions -w -fshort-wchar $(debug)
 #/nologo /MT /GX 
 $(PROGRAM) : $(OBJECTS_CPP_REL) $(OBJECTS_C_REL) 
 #	echo $(SOURCES_CPP)
 #	echo $(SOURCES_C)
-	g++ -g3 -lstdc++ -o $(PROGRAM) $(OBJECTS_CPP_REL) $(OBJECTS_C_REL) $(LINK32_FLAGS)
+	$(CC) -lstdc++ -lpthread -o $(PROGRAM) $(OBJECTS_CPP_REL) $(OBJECTS_C_REL) $(LINK32_FLAGS)
 
 #DEB : $(OBJECTS_CPP_DEB) 
 	echo "DEB build Called"
@@ -247,5 +236,3 @@ clean : FORCE
 	find -name *.o -type f -exec rm {} \;
 
 FORCE:
-
-
