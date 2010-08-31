@@ -59,7 +59,7 @@ private:
 	void LoadUnCompressedFileL(RFs& aFs, const TDesC& aName);
 	TBool FileIsBAFLCompressedL(RFs& aFs, const TDesC& aName);
 
-	void OptimizeDictL();
+	void OptimizeDict();
 	void FindEmbeddedDict(TDesC8& aMatch, TInt aStart);
 	void WriteHeaderL(RWriteStream& aStream);
 	void WriteDictionaryL(RWriteStream& aStream);

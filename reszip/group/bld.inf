@@ -25,9 +25,9 @@ PRJ_EXPORTS
 
 PRJ_MMPFILES
 #ifndef TOOLS
-    #ifndef TOOLS2
-        reszip.mmp
-    #endif
+#ifndef TOOLS2
+reszip.mmp
+#endif
 #endif
 
 PRJ_TESTMMPFILES

@@ -37,7 +37,7 @@ public:
 	TInt Saved();
 	TDesC8& Data();
 	TInt Use();
-	void CreateEmbeddedDictL(TInt aDictIndex,CDictArray* aDict);
+	void CreateEmbeddedDict(TInt aDictIndex,CDictArray* aDict);
 public:
 	TBufC8<KMaxDictEntry> iData;
 	TInt iUses;

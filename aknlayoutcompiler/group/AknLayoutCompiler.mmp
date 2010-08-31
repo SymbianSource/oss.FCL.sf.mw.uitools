@@ -25,7 +25,7 @@ SYSTEMINCLUDE     ../inc
 SYSTEMINCLUDE   ../../inc
 
 SYSTEMINCLUDE   ../../toollibraries/arabica/include
-SYSTEMINCLUDE   ../../toollibraries/xercesc/include
+SYSTEMINCLUDE   ../../toollibraries/xerces-c/include
 
 MW_LAYER_SYSTEMINCLUDE
 
