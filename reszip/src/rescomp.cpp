@@ -426,7 +426,7 @@ TInt CResComp::CompressResourcesL(TInt aDictEntries)
 
 	// Optimize Dictionary
 
-	OptimizeDict();
+	OptimizeDictL();
 
 	// Compress using optimized dictionary
 
@@ -527,7 +527,7 @@ void CResComp::WriteFileL(RFs& aFs, const TDesC& aName)
 
 
 
-void CResComp::OptimizeDict()
+void CResComp::OptimizeDictL()
 	{
 	// Find referenced dicts
 	TInt entries = iDict->Count();
@@ -565,7 +565,7 @@ void CResComp::OptimizeDict()
 
 	for (TInt zz=0; zz<newDictEntries; zz++)
 		{
-		iDict->At(zz).CreateEmbeddedDict(zz, iDict);
+		iDict->At(zz).CreateEmbeddedDictL(zz, iDict);
 		}
 	}
 
