@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2002-2008 Nokia Corporation and/or its subsidiary(-ies).
+* Copyright (c) 2002-2010 Nokia Corporation and/or its subsidiary(-ies).
 * All rights reserved.
 * This component and the accompanying materials are made available
 * under the terms of "Eclipse Public License v1.0"
@@ -1231,7 +1231,7 @@ void CMLCompDataInstOpt::SetGenericAPI(SCompDataImplFunc::TFuncType aType, const
 // added.
 // extern string KScalableExtraCpp;
 string KScalableExtraCpp = "\
-#include \"aknlayout2scalabledecode.h\"\n\
+#include \"AknLayout2ScalableDecode.h\"\n\
 namespace $INTERFACE_NS { extern const TUint8 KByteCodedData_$FIRSTINSTANCENAME[]; }\n";
 
 //extern string KScalableInitialCpp;
@@ -1909,7 +1909,7 @@ CCdlTkInterface& MLCompDataCdlInstanceOpt::Interface()
 	}
 
 const string KCommonImplStart = "\
-#include \"aknlayout2scalabledecode.h\"\n\
+#include \"AknLayout2ScalableDecode.h\"\n\
 namespace $NAMESPACENAME { extern TUint8 const KByteCodedData_$FIRSTINSTANCENAME[] = {\n";
 
 const string KCommonImplImpl = "\

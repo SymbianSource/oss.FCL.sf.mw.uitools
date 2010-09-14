@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2002-2004 Nokia Corporation and/or its subsidiary(-ies).
+* Copyright (c) 2002-2010 Nokia Corporation and/or its subsidiary(-ies).
 * All rights reserved.
 * This component and the accompanying materials are made available
 * under the terms of "Eclipse Public License v1.0"
@@ -258,6 +258,6 @@ void LayoutToCdl::SetHeaders(CCdlTkInterface& aInterface, const string& aCdlName
 	string ifName(InterfaceName(CdlTkUtil::StripPath(aCdlName)));
 	aInterface.Header().SetName(ifName);
 	aInterface.Header().SetVersion(CCdlTkInterfaceHeader::CVersion(KGeneratedInterfaceMajorVer, KGeneratedInterfaceMinorVer));
-	aInterface.Cpp().push_back("#include <aknlayout2def.h>");
+	aInterface.Cpp().push_back("#include <AknLayout2Def.h>");
 	}
 

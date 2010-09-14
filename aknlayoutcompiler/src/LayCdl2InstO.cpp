@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2002-2004 Nokia Corporation and/or its subsidiary(-ies).
+* Copyright (c) 2002-2010 Nokia Corporation and/or its subsidiary(-ies).
 * All rights reserved.
 * This component and the accompanying materials are made available
 * under the terms of "Eclipse Public License v1.0"
@@ -466,7 +466,7 @@ SImplFunc& CLayoutInstOpt::AddImplFunc(SImplFunc::TFuncType aType, int aParams, 
 // added.
 extern string KExtraCpp;
 string KExtraCpp = "\
-#include \"aknlayout2decode.h\"\n\
+#include \"AknLayout2Decode.h\"\n\
 namespace $INTERFACE_NS { extern const TUint8 KByteCodedData[]; }\n";
 extern string KInitialCpp;
 string KInitialCpp ="\
@@ -803,7 +803,7 @@ CCdlTkInterface& LayoutCdlInstanceOpt::Interface()
 	}
 
 const string KCommonImplStart = "\
-#include \"aknlayout2decode.h\"\n\
+#include \"AknLayout2Decode.h\"\n\
 namespace $NAMESPACENAME { extern TUint8 const KByteCodedData[] = {\n";
 
 const string KCommonImplImpl = "\

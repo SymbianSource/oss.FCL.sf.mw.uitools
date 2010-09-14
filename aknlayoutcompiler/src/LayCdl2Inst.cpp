@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2002-2004 Nokia Corporation and/or its subsidiary(-ies).
+* Copyright (c) 2002-2010 Nokia Corporation and/or its subsidiary(-ies).
 * All rights reserved.
 * This component and the accompanying materials are made available
 * under the terms of "Eclipse Public License v1.0"
@@ -180,7 +180,7 @@ CLayoutToInst::CLayoutToInst(CLayoutToInst* aBase, CCdlTkInterface& aInterface, 
 	iInstance = new CCdlTkInstance(iInterface);
 	iInstance->SetName(aInstName);
 
-	string extraCpp("#include <aknlayout2datadef.h>\n");
+	string extraCpp("#include <AknLayout2DataDef.h>\n");
 	extraCpp += string("#include \"") + CdlTkUtil::ToLower(aBase ? aBase->FwdDeclName() : FwdDeclName()) + "\"\n";
 	iInstance->SetExtraCpp(extraCpp);
 
