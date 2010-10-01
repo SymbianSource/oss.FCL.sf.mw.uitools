@@ -26,32 +26,23 @@ PRJ_PLATFORMS
 
 PRJ_EXPORTS
 
-//#ifndef SBSV2
-	//START TOOLS
-		//#if defined(TOOLS) 
-				../binary/svgtbinencode.exe	/epoc32/tools/svgtbinencode.exe
-				../binary/xerces-c_2_6.dll	/epoc32/tools/xerces-c_2_6.dll
-				../binary/svgtbinencode	/epoc32/tools/svgtbinencode
-				// For Windows abld Support "Link with dynamic xerces-c.2.8.0"
-				//../lib_win/xerces-c_2.lib /epoc32/release/tools/rel/xerces-c_2.lib
-				//../lib_win/xerces-c_2.lib /epoc32/release/tools/deb/xerces-c_2.lib
-		//#endif
-	//END
-//#endif  
+
+../binary/svgtbinencode.exe	/epoc32/tools/svgtbinencode.exe
+../binary/xerces-c_2_6.dll	/epoc32/tools/xerces-c_2_6.dll
+../binary/svgtbinencode	/epoc32/tools/svgtbinencode
+				
 
 #if HOSTPLATFORM_DIR==win32
 	#if defined(SBSV2) && defined(TOOLS2) 
 		// For Windows Raptor Support "Link with static xerces-c.2.8.0 mingw"
-		../lib_win/libxercesenc-c.a ../release/tools2/rel/libxercesenc-c.a
-		../lib_win/libxercesenc-c.a ../release/tools2/deb/libxercesenc-c.a
+
 	#endif
 #endif
 
 #if HOSTPLATFORM_DIR!=win32
 	#if defined(SBSV2) && defined(TOOLS2) 
 		// For Linux Raptor Support "Link with static xerces-c.2.8.0 mingw"
-		../lib_linux/libxercesenc-c.a ../release/tools2/linux-i386/rel/libxercesenc-c.a
-		../lib_linux/libxercesenc-c.a ../release/tools2/linux-i386/deb/libxercesenc-c.a
+
 	#endif
 #endif
 
