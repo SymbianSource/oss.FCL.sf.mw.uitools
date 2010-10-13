@@ -21,14 +21,21 @@ TOOLS CWTOOLS TOOLS2
 
 PRJ_EXPORTS
 
-/* ../binary/CdlCompiler.EXE /epoc32/tools/CdlCompiler.EXE  */
+../binary/CdlCompiler.exe /epoc32/tools/CdlCompiler.exe 
 
 PRJ_MMPFILES
 
-/* FIXME: Can we remove this later ? */
-/* defined(TOOLS) || defined(CWTOOLS) ||  */
-#if defined(TOOLS2)
-CdlCompiler.mmp
+#if defined(TOOLS) || defined(CWTOOLS) || defined(TOOLS2)
+
+/*
+ * NOTICE! CdlCompiler is not compiled any more during usual build.
+ * It is just exported from ../binary directory.
+ * If you really want compile AknLayoutCompiler from sources you need to 
+ * uncomment below line, build this project and copy 
+ * /epoc32/tools/AknLayoutCompiler.exe to ../binary directory and 
+ * put the binary to version control.
+ */
+// CdlCompiler.mmp
 #endif
 
 // End of File
